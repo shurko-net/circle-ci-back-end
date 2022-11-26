@@ -54,7 +54,7 @@ app.UseSwaggerUI(options =>
     options.SwaggerEndpoint("/swagger/v1/swagger.json", "CircleCI");
 });
 
-//var context = app.Services.CreateScope().ServiceProvider.GetRequiredService<DataContext>();
-//SeedData.SeedDatabase(context);
+var context = app.Services.CreateScope().ServiceProvider.GetRequiredService<DataContext>();
+SeedData.SeedDatabase(context);
 
 app.Run();
