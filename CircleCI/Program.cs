@@ -15,6 +15,17 @@ builder.Services.AddDbContext<DataContext>(opts =>
     opts.EnableSensitiveDataLogging(true);
 });
 
+builder.Services.AddControllers().AddNewtonsoftJson();
+
+builder.Services.Configure<MvcNewtonsoftJsonOptions>(opts =>
+{
+    opts.SerializerSettings.NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore;
+});
+
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "CircleCI", Version = "v1" });
+});
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -36,7 +47,14 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
-var context = app.Services.CreateScope().ServiceProvider.GetRequiredService<DataContext>();
-SeedData.SeedDatabase(context);
+app.UseSwagger();
+
+app.UseSwaggerUI(options =>
+{
+    options.SwaggerEndpoint("/swagger/v1/swagger.json", "CircleCI");
+});
+
+//var context = app.Services.CreateScope().ServiceProvider.GetRequiredService<DataContext>();
+//SeedData.SeedDatabase(context);
 
 app.Run();
