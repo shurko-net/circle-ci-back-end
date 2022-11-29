@@ -36,9 +36,29 @@ namespace CircleCI.Controllers
         [HttpPost]
         public async Task<IActionResult> SaveComment(Comment comment)
         {
-            await context.Comments.AddAsync(comment);
-            await context.SaveChangesAsync();
-            return Ok(comment);
+            User? user = await context.Users.FindAsync(comment.IdUser); // чел который написал комент
+            Post? post = await context.Posts.FindAsync(comment.IdPost); // пост под которым высрали комент
+            if (post == null && user == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+
+                post!.User = await context.Users.FindAsync(post.IdUser);
+                post!.Category = await context.Categories.FindAsync(post.IdCategory);
+                Comment com = new()
+                {
+                    CommentContent = comment.CommentContent,
+                    IdUser = user!.IdUser,
+                    IdPost = post!.IdPost,
+                    User = user,
+                    Post = post
+                };
+                await context.Comments.AddAsync(com);
+                await context.SaveChangesAsync();
+                return Ok(com);
+            }
         }
 
         [HttpPut]

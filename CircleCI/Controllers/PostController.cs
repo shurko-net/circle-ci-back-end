@@ -36,9 +36,29 @@ namespace CircleCI.Controllers
         [HttpPost]
         public async Task<IActionResult> SavePost(Post post)
         {
-            await context.Posts.AddAsync(post);
-            await context.SaveChangesAsync();
-            return Ok(post);
+            User? user = await context.Users.FindAsync(post.IdUser);
+            Category? category = await context.Categories.FindAsync(post.IdCategory);
+            if (user == null && category == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                Post pt = new()
+                {
+                    IdUser = user!.IdUser,
+                    IdCategory = category!.IdCategory,
+                    Date = post.Date,
+                    PostContent = post.PostContent,
+                    Likes = post.Likes,
+                    User = user,
+                    Category = category
+                };
+                await context.Posts.AddAsync(pt);
+                await context.SaveChangesAsync();
+                return Ok(pt);
+            }
+            
         }
 
         [HttpPut]

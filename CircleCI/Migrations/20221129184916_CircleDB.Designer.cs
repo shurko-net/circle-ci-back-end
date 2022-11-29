@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CircleCI.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20221126141051_CircleDB")]
+    [Migration("20221129184916_CircleDB")]
     partial class CircleDB
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

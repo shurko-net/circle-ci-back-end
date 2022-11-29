@@ -1,6 +1,7 @@
 ﻿using CircleCI.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 
 namespace CircleCI.Controllers
 {
@@ -36,11 +37,24 @@ namespace CircleCI.Controllers
         [HttpPost]
         public async Task<IActionResult> SaveSubscription(Subscription subscription)
         {
-            await context.Subscriptions.AddAsync(subscription);
-            await context.SaveChangesAsync();
-            return Ok(subscription);
+            User? user = await context.Users.FindAsync(subscription.IdUser);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                Subscription sub = new()
+                {
+                    IdUser = user.IdUser,
+                    IdUserSub = subscription.IdUserSub,
+                    User = user
+                };
+                await context.Subscriptions.AddAsync(sub);
+                await context.SaveChangesAsync();
+                return Ok(sub);
+            }
         }
-
         [HttpPut]
         public async Task UpdateSubscription(Subscription subscription)
         {

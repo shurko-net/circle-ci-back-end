@@ -10,7 +10,6 @@ namespace CircleCI.Models
         [ForeignKey("User")]
         public int? IdUser { get; set; }
         public int IdUserSub { get; set; }
-
         public User? User { get; set; }
     }
 }

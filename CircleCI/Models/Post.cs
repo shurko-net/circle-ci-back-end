@@ -15,7 +15,6 @@ namespace CircleCI.Models
         [Column(TypeName = "TEXT")]
         public string PostContent { get; set; } = string.Empty;
         public int Likes { get; set; }
-
         public User? User { get; set; }
         public Category? Category { get; set; }
     }
