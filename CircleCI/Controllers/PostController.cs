@@ -1,6 +1,7 @@
 ﻿using CircleCI.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace CircleCI.Controllers
 {
@@ -44,19 +45,26 @@ namespace CircleCI.Controllers
             }
             else
             {
-                Post pt = new()
+                try
                 {
-                    IdUser = user!.IdUser,
-                    IdCategory = category!.IdCategory,
-                    Date = post.Date,
-                    PostContent = post.PostContent,
-                    Likes = post.Likes,
-                    User = user,
-                    Category = category
-                };
-                await context.Posts.AddAsync(pt);
-                await context.SaveChangesAsync();
-                return Ok(pt);
+                    Post pt = new()
+                    {
+                        IdUser = user!.IdUser,
+                        IdCategory = category!.IdCategory,
+                        Date = post.Date,
+                        PostContent = post.PostContent,
+                        Likes = post.Likes,
+                        User = user,
+                        Category = category
+                    };
+                    await context.Posts.AddAsync(pt);
+                    await context.SaveChangesAsync();
+                    return Ok(pt);
+                }
+                catch
+                {
+                    return NotFound();
+                }
             }
             
         }

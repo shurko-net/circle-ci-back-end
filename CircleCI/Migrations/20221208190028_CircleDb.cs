@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace CircleCI.Migrations
 {
-    public partial class CircleDB : Migration
+    public partial class CircleDb : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -46,8 +46,8 @@ namespace CircleCI.Migrations
                 {
                     IdPost = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    IdUser = table.Column<int>(type: "int", nullable: true),
-                    IdCategory = table.Column<int>(type: "int", nullable: true),
+                    IdUser = table.Column<int>(type: "int", nullable: false),
+                    IdCategory = table.Column<int>(type: "int", nullable: false),
                     Date = table.Column<DateTime>(type: "datetime2", nullable: false),
                     PostContent = table.Column<string>(type: "TEXT", nullable: false),
                     Likes = table.Column<int>(type: "int", nullable: false)
@@ -59,12 +59,14 @@ namespace CircleCI.Migrations
                         name: "FK_Posts_Categories_IdCategory",
                         column: x => x.IdCategory,
                         principalTable: "Categories",
-                        principalColumn: "IdCategory");
+                        principalColumn: "IdCategory",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Posts_Users_IdUser",
                         column: x => x.IdUser,
                         principalTable: "Users",
-                        principalColumn: "IdUser");
+                        principalColumn: "IdUser",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(

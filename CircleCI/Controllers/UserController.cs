@@ -1,6 +1,9 @@
 ﻿using CircleCI.Models;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace CircleCI.Controllers
 {
@@ -51,7 +54,15 @@ namespace CircleCI.Controllers
         [HttpDelete("{id}")]
         public async Task DeleteUser(int id)
         {
-            context.Users.Remove(new User() { IdUser = id });
+            List<Post> post = await context.Posts.ToListAsync();
+            List<Comment> comment = await context.Comments.ToListAsync();
+            List<Post> posts = post.FindAll(p => p.IdUser == id);
+            List<Comment> comments = comment.FindAll(p => p.IdUser == id);
+            comments ??= new List<Comment>();
+            posts ??= new List<Post>();
+            context.Posts.RemoveRange((IEnumerable<Post>)posts);
+            context.Comments.RemoveRange((IEnumerable<Comment>)comments);
+            context.Users.Remove(new User { IdUser = id });
             await context.SaveChangesAsync();
         }
     }

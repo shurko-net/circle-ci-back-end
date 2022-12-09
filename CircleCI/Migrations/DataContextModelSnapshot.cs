@@ -79,9 +79,11 @@ namespace CircleCI.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<int?>("IdCategory")
+                        .IsRequired()
                         .HasColumnType("int");
 
                     b.Property<int?>("IdUser")
+                        .IsRequired()
                         .HasColumnType("int");
 
                     b.Property<int>("Likes")
@@ -182,11 +184,15 @@ namespace CircleCI.Migrations
                 {
                     b.HasOne("CircleCI.Models.Category", "Category")
                         .WithMany()
-                        .HasForeignKey("IdCategory");
+                        .HasForeignKey("IdCategory")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("CircleCI.Models.User", "User")
                         .WithMany()
-                        .HasForeignKey("IdUser");
+                        .HasForeignKey("IdUser")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Category");
 

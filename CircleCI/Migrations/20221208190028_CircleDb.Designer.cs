@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CircleCI.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20221129184916_CircleDB")]
-    partial class CircleDB
+    [Migration("20221208190028_CircleDb")]
+    partial class CircleDb
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -81,9 +81,11 @@ namespace CircleCI.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<int?>("IdCategory")
+                        .IsRequired()
                         .HasColumnType("int");
 
                     b.Property<int?>("IdUser")
+                        .IsRequired()
                         .HasColumnType("int");
 
                     b.Property<int>("Likes")
@@ -184,11 +186,15 @@ namespace CircleCI.Migrations
                 {
                     b.HasOne("CircleCI.Models.Category", "Category")
                         .WithMany()
-                        .HasForeignKey("IdCategory");
+                        .HasForeignKey("IdCategory")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("CircleCI.Models.User", "User")
                         .WithMany()
-                        .HasForeignKey("IdUser");
+                        .HasForeignKey("IdUser")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Category");
 

@@ -7,9 +7,13 @@ namespace CircleCI.Models
         public static void SeedDatabase(DataContext context)
         {
             context.Database.Migrate();
-            Category c = new Category() { Name = "IT" };
-            context.Categories.Add(c);
-            context.SaveChanges();
+            if (context.Categories.Count() == 0)
+            {
+                
+                Category c = new Category() { Name = "IT" };
+                context.Categories.Add(c);
+                context.SaveChanges();
+            }
         }
     }
 }
