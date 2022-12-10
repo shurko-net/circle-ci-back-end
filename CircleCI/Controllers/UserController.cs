@@ -56,12 +56,16 @@ namespace CircleCI.Controllers
         {
             List<Post> post = await context.Posts.ToListAsync();
             List<Comment> comment = await context.Comments.ToListAsync();
+            List<Subscription> sub = await context.Subscriptions.ToListAsync();
             List<Post> posts = post.FindAll(p => p.IdUser == id);
             List<Comment> comments = comment.FindAll(p => p.IdUser == id);
+            List<Subscription> subs = sub.FindAll(p => p.IdUserSub == id);
             comments ??= new List<Comment>();
             posts ??= new List<Post>();
+            subs ??= new List<Subscription>();
             context.Posts.RemoveRange((IEnumerable<Post>)posts);
             context.Comments.RemoveRange((IEnumerable<Comment>)comments);
+            context.Subscriptions.RemoveRange((IEnumerable<Subscription>)subs);
             context.Users.Remove(new User { IdUser = id });
             await context.SaveChangesAsync();
         }

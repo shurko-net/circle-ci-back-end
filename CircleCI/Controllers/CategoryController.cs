@@ -26,11 +26,7 @@ namespace CircleCI.Controllers
         public async Task<IActionResult> GetCategory(int id)
         {
             Category? c = await context.Categories.FindAsync(id);
-            if (c == null)
-            {
-                return NotFound();
-            }
-            return Ok(c);
+            return c == null ? NotFound() : Ok(c);
         }
 
         [HttpPost]
@@ -44,7 +40,7 @@ namespace CircleCI.Controllers
         [HttpPut]
         public async Task UpdateCategory(Category category)
         {
-            context.Update(category);
+            context.Categories.Update(category);
             await context.SaveChangesAsync();
         }
 

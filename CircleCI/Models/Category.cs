@@ -7,7 +7,6 @@ namespace CircleCI.Models
     {
         [Key]
         public int IdCategory { get; set; }
-
         [Column(TypeName = "VARCHAR")]
         [StringLength(45)]
         public string Name { get; set; } = string.Empty;

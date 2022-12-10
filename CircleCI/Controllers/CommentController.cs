@@ -1,6 +1,7 @@
 ﻿using CircleCI.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace CircleCI.Controllers
 {

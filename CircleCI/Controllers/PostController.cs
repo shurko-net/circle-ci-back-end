@@ -65,10 +65,8 @@ namespace CircleCI.Controllers
                 {
                     return NotFound();
                 }
-            }
-            
+            }  
         }
-
         [HttpPut]
         public async Task UpdatePost(Post post)
         {
