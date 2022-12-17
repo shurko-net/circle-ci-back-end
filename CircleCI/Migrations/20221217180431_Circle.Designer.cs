@@ -12,13 +12,14 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CircleCI.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20221208190028_CircleDb")]
-    partial class CircleDb
+    [Migration("20221217180431_Circle")]
+    partial class Circle
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
+                .UseCollation("SQL_Cyrillic_General_CI_AS")
                 .HasAnnotation("ProductVersion", "6.0.0")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
@@ -81,11 +82,9 @@ namespace CircleCI.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<int?>("IdCategory")
-                        .IsRequired()
                         .HasColumnType("int");
 
                     b.Property<int?>("IdUser")
-                        .IsRequired()
                         .HasColumnType("int");
 
                     b.Property<int>("Likes")
@@ -186,15 +185,11 @@ namespace CircleCI.Migrations
                 {
                     b.HasOne("CircleCI.Models.Category", "Category")
                         .WithMany()
-                        .HasForeignKey("IdCategory")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("IdCategory");
 
                     b.HasOne("CircleCI.Models.User", "User")
                         .WithMany()
-                        .HasForeignKey("IdUser")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("IdUser");
 
                     b.Navigation("Category");
 

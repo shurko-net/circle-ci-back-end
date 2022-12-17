@@ -2,25 +2,26 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.OpenApi.Models;
 using Microsoft.EntityFrameworkCore;
 using CircleCI.Models;
-var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
-var builder = WebApplication.CreateBuilder(args);
 
+var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+
+var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-builder.Services.AddCors();
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy(MyAllowSpecificOrigins,
         builder =>
         {
-            builder.WithOrigins("http://localhost:3000/%22")
-            .AllowAnyOrigin()
-            .AllowAnyMethod()
+            builder.WithOrigins("http://localhost:3000")
+            .WithMethods("POST", "GET", "DELETE", "PUT")
             .AllowAnyHeader()
             .SetPreflightMaxAge(TimeSpan.FromSeconds(3600));
         });
 });
+
 builder.Services.AddDbContext<DataContext>(opts =>
 {
     opts.UseSqlServer(builder.Configuration["ConnectionStrings:CircleConnection"]);

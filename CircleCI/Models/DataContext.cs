@@ -12,5 +12,10 @@ namespace CircleCI.Models
         public DbSet<Post> Posts => Set<Post>();
         public DbSet<Subscription> Subscriptions => Set<Subscription>();
         public DbSet<User> Users => Set<User>();
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.UseCollation("Cyrillic_General_CI_AS");
+        }
+        
     }
 }

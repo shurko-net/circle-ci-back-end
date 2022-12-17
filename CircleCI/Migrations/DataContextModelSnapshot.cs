@@ -17,6 +17,7 @@ namespace CircleCI.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
+                .UseCollation("SQL_Cyrillic_General_CI_AS")
                 .HasAnnotation("ProductVersion", "6.0.0")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
@@ -79,11 +80,9 @@ namespace CircleCI.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<int?>("IdCategory")
-                        .IsRequired()
                         .HasColumnType("int");
 
                     b.Property<int?>("IdUser")
-                        .IsRequired()
                         .HasColumnType("int");
 
                     b.Property<int>("Likes")
@@ -184,15 +183,11 @@ namespace CircleCI.Migrations
                 {
                     b.HasOne("CircleCI.Models.Category", "Category")
                         .WithMany()
-                        .HasForeignKey("IdCategory")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("IdCategory");
 
                     b.HasOne("CircleCI.Models.User", "User")
                         .WithMany()
-                        .HasForeignKey("IdUser")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("IdUser");
 
                     b.Navigation("Category");
 
