@@ -12,14 +12,14 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CircleCI.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20221217180431_Circle")]
+    [Migration("20221218111415_Circle")]
     partial class Circle
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .UseCollation("SQL_Cyrillic_General_CI_AS")
+                .UseCollation("Ukrainian_CI_AS")
                 .HasAnnotation("ProductVersion", "6.0.0")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 

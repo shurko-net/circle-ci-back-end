@@ -17,7 +17,7 @@ namespace CircleCI.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .UseCollation("SQL_Cyrillic_General_CI_AS")
+                .UseCollation("Ukrainian_CI_AS")
                 .HasAnnotation("ProductVersion", "6.0.0")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
