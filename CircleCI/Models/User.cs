@@ -24,5 +24,6 @@ namespace CircleCI.Models
         public string TNumber { get; set; } = string.Empty;
         [Column(TypeName = "TEXT")]
         public string Biography { get; set; } = string.Empty;
+        public int Subscribed { get; set; }
     }
 }

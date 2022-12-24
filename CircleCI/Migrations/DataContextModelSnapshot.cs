@@ -149,6 +149,9 @@ namespace CircleCI.Migrations
                         .HasMaxLength(45)
                         .HasColumnType("VARCHAR(45)");
 
+                    b.Property<int>("Subscribed")
+                        .HasColumnType("int");
+
                     b.Property<string>("Surname")
                         .IsRequired()
                         .HasMaxLength(45)

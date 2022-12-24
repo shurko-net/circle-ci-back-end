@@ -33,7 +33,8 @@ namespace CircleCI.Migrations
                     Email = table.Column<string>(type: "VARCHAR(45)", maxLength: 45, nullable: false),
                     Password = table.Column<string>(type: "VARCHAR(45)", maxLength: 45, nullable: false),
                     TNumber = table.Column<string>(type: "VARCHAR(45)", maxLength: 45, nullable: false),
-                    Biography = table.Column<string>(type: "TEXT", nullable: false)
+                    Biography = table.Column<string>(type: "TEXT", nullable: false),
+                    Subscribed = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {

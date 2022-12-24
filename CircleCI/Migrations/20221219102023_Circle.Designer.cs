@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CircleCI.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20221218111415_Circle")]
+    [Migration("20221219102023_Circle")]
     partial class Circle
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -150,6 +150,9 @@ namespace CircleCI.Migrations
                         .IsRequired()
                         .HasMaxLength(45)
                         .HasColumnType("VARCHAR(45)");
+
+                    b.Property<int>("Subscribed")
+                        .HasColumnType("int");
 
                     b.Property<string>("Surname")
                         .IsRequired()
