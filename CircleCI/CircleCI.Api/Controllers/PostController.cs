@@ -64,7 +64,7 @@ public class PostController : BaseController
                 CreatedAt = DateTime.UtcNow,
                 Title = request.Title,
                 Content = request.Content,
-                ImageUrl = "",//await _cloudStorage.UploadFileAsync(request.ImageUrl, _cloudStorage.GetFileName()),
+                ImageUrl = await _cloudStorage.UploadFileAsync(request.ImageUrl, _cloudStorage.GetFileName()),
                 Category = request.Categories.Select(categoryName => new Category()
                 {
                     Name = categoryName
