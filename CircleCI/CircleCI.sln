@@ -1,0 +1,36 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CircleCI.Api", "CircleCI.Api\CircleCI.Api.csproj", "{53725003-3593-4655-BDDF-CF6899FB17EA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CircleCI.Entities", "CircleCI.Entities\CircleCI.Entities.csproj", "{0D6700D7-4878-4F4F-B652-236736B32123}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CircleCI.DataService", "CircleCI.DataService\CircleCI.DataService.csproj", "{37FB60DA-4175-4C50-BE9E-6C1D046A647F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{53725003-3593-4655-BDDF-CF6899FB17EA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{53725003-3593-4655-BDDF-CF6899FB17EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{53725003-3593-4655-BDDF-CF6899FB17EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{53725003-3593-4655-BDDF-CF6899FB17EA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0D6700D7-4878-4F4F-B652-236736B32123}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0D6700D7-4878-4F4F-B652-236736B32123}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0D6700D7-4878-4F4F-B652-236736B32123}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0D6700D7-4878-4F4F-B652-236736B32123}.Release|Any CPU.Build.0 = Release|Any CPU
+		{37FB60DA-4175-4C50-BE9E-6C1D046A647F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{37FB60DA-4175-4C50-BE9E-6C1D046A647F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{37FB60DA-4175-4C50-BE9E-6C1D046A647F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{37FB60DA-4175-4C50-BE9E-6C1D046A647F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+	EndGlobalSection
+EndGlobal
