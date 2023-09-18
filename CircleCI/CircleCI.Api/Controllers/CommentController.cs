@@ -30,14 +30,20 @@ namespace CircleCI.Api.Controllers
         [HttpPost("save-comment")]
         public async Task<IActionResult> SaveComment([FromBody] CreateCommentRequest request)
         {
-            request.UserId = _userIdentifire.GetIdByToken(Request);
+            var user = await _unitOfWork.Users.GetByIdAsync(_userIdentifire.GetIdByToken(Request));
+            
+            if (user == null)
+            {
+                return Unauthorized();
+            }
             
             var comment = _mapper.Map<Comment>(request);
-
+            comment.User = user;
+            
             await _unitOfWork.Comments.Add(comment);
             await _unitOfWork.CompleteAsync();
             
-            return Ok(comment);
+            return Ok(_mapper.Map<GetCommentResponse>(comment));
         }
     }
 }
