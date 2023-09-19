@@ -31,7 +31,7 @@ namespace CircleCI.DataService.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("CategoryId")
+                    b.Property<int>("CategoryListId")
                         .HasColumnType("int");
 
                     b.Property<int>("PostId")
@@ -39,7 +39,7 @@ namespace CircleCI.DataService.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CategoryId");
+                    b.HasIndex("CategoryListId");
 
                     b.HasIndex("PostId");
 
@@ -284,8 +284,8 @@ namespace CircleCI.DataService.Migrations
             modelBuilder.Entity("CircleCI.Entities.DbSet.Category", b =>
                 {
                     b.HasOne("CircleCI.Entities.DbSet.CategoryList", "CategoryList")
-                        .WithMany("Categories")
-                        .HasForeignKey("CategoryId")
+                        .WithMany()
+                        .HasForeignKey("CategoryListId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -396,11 +396,6 @@ namespace CircleCI.DataService.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("CircleCI.Entities.DbSet.CategoryList", b =>
-                {
-                    b.Navigation("Categories");
                 });
 
             modelBuilder.Entity("CircleCI.Entities.DbSet.Post", b =>

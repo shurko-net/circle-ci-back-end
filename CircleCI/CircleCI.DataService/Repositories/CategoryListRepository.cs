@@ -17,7 +17,6 @@ public class CategoryListRepository : GenericRepository<CategoryList>, ICategory
         try
         {
             return await _dbSet.Where(c => list.Contains(c.Id))
-                .Include(c => c.Categories)
                 .AsNoTracking()
                 .ToListAsync();
         }

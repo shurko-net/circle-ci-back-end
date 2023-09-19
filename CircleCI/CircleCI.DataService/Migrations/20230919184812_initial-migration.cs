@@ -123,15 +123,15 @@ namespace CircleCI.DataService.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    CategoryId = table.Column<int>(type: "int", nullable: false),
+                    CategoryListId = table.Column<int>(type: "int", nullable: false),
                     PostId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Categories", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Categories_CategoriesList_CategoryId",
-                        column: x => x.CategoryId,
+                        name: "FK_Categories_CategoriesList_CategoryListId",
+                        column: x => x.CategoryListId,
                         principalTable: "CategoriesList",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -224,9 +224,9 @@ namespace CircleCI.DataService.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Categories_CategoryId",
+                name: "IX_Categories_CategoryListId",
                 table: "Categories",
-                column: "CategoryId");
+                column: "CategoryListId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Categories_PostId",

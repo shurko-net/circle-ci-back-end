@@ -12,14 +12,6 @@ public class DomainToResponse : Profile
 
         CreateMap<User, UserResponse>();
 
-        CreateMap<CategoryList, Category>()
-            .ForMember(dest => dest.CategoryId,
-                opt => opt.MapFrom(src => src.Id))
-            .ForMember(dest => dest.CategoryList,
-                opt => opt.MapFrom(src => src))
-            .ForMember(dest => dest.Id,
-                opt => opt.Ignore());
-        
         CreateMap<Post, GetPostResponse>()
             .ForMember(dest => dest.Name,
                 opt => opt.MapFrom(src => src.User.Name))
@@ -28,8 +20,7 @@ public class DomainToResponse : Profile
             .ForMember(dest => dest.ProfileImageUrl,
                 opt => opt.MapFrom(src => src.User.ProfileImageUrl))
             .ForMember(dest => dest.Category,
-                opt => opt.MapFrom(src 
-                    => src.Category.Select(c => c.CategoryId).ToList()));
+                opt => opt.MapFrom(src => src.Category.Select(c => c.CategoryList)));
 
         CreateMap<Comment, GetCommentResponse>()
             .ForMember(dest => dest.UserId,

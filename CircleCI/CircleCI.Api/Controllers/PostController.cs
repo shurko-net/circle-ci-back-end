@@ -36,7 +36,7 @@ public class PostController : BaseController
     public async Task<IActionResult> GetPosts(int page = 0)
     {
         var userId = _userIdentifire.GetIdByToken(Request);
-        var posts = await _unitOfWork.Posts.KeysetPage(page, userId);
+        var posts = await _unitOfWork.Posts.KeySetPage(page, userId);
         int postAmount = await _unitOfWork.Posts.PostsAmount();
         Response.Headers.Add("x-total-count", postAmount.ToString());
         
@@ -61,17 +61,23 @@ public class PostController : BaseController
 
             var post = _mapper.Map<Post>(request);
             var category = await _unitOfWork.CategoriesList.GetCategoriesByIdAsync(request.Categories);
-            
+
             post.ImageUrl = await _cloudStorage.UploadFileAsync(request.ImageUrl, _cloudStorage.GetFileName());
             post.UserId = userId;
             post.Category = category.Select(c => new Category()
             {
-                CategoryId = c.Id,
+                CategoryListId = c.Id,
             }).ToList();
             await _unitOfWork.Posts.Add(post);
             await _unitOfWork.CompleteAsync();
-
-            return Ok(_mapper.Map<GetPostResponse>(post));
+            
+            post.Category = category.Select(c => new Category()
+            {
+                CategoryList = c
+            }).ToList();
+            var response = _mapper.Map<GetPostResponse>(post);
+            
+            return Ok(response);
         }
 
         return BadRequest();

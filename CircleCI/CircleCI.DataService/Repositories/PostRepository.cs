@@ -20,6 +20,7 @@ public class PostRepository : GenericRepository<Post>, IPostRepository
         {
             var temp = await _dbSet.Include(p => p.User)
                 .Include(p => p.Category)
+                .ThenInclude(p => p.CategoryList)
                 .AsSplitQuery()
                 .FirstOrDefaultAsync(p => p.Id == postId);
 
@@ -100,7 +101,7 @@ public class PostRepository : GenericRepository<Post>, IPostRepository
         }
     }
 
-    public async Task<IEnumerable<GetPostResponse?>> KeysetPage(int? page, int userId)
+    public async Task<IEnumerable<GetPostResponse?>> KeySetPage(int? page, int userId)
     {
         try
         {
@@ -108,6 +109,7 @@ public class PostRepository : GenericRepository<Post>, IPostRepository
             var temp = await _dbSet.OrderByDescending(b => b.Id)
                 .Skip((page ?? 0) * pageSize)
                 .Include(b => b.Category)
+                .ThenInclude(b => b.CategoryList)
                 .Include(b => b.User)
                 .Take(pageSize)
                 .AsSplitQuery()

@@ -83,10 +83,5 @@ public class AppDbContext : DbContext
             .WithOne(e => e.Post)
             .HasForeignKey(e => e.PostId)
             .OnDelete(DeleteBehavior.Restrict);
-
-        modelBuilder.Entity<CategoryList>()
-            .HasMany(e => e.Categories)
-            .WithOne(e => e.CategoryList)
-            .HasForeignKey(e => e.CategoryId);
     }
 }
