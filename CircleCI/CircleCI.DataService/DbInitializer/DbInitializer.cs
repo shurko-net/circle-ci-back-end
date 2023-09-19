@@ -14,7 +14,8 @@ public class DbInitializer : IDbInitializer
     }
     public void Initialize()
     {
-        if (!_context.Database.GetPendingMigrations().Any())
+        if (!_context.Database.CanConnect()
+            || !_context.Database.GetPendingMigrations().Any())
         {
             _context.Database.Migrate();
         }
