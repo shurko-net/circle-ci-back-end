@@ -17,6 +17,8 @@ public class RequestToDomain : Profile
         CreateMap<CreateCommentRequest, Comment>()
             .ForMember(dest => dest.CreatedAt,
                 opt => opt.MapFrom(src => DateTime.UtcNow));
-        
+        CreateMap<CreatePostRequest, Post>()
+            .ForMember(dest => dest.CreatedAt,
+                opt => opt.MapFrom(src => DateTime.UtcNow));
     }
 }

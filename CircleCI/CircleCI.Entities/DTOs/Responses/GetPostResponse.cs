@@ -20,5 +20,5 @@ public class GetPostResponse
     public bool IsMyself { get; set; }
     public bool IsLiked { get; set; }
     public bool IsSaved { get; set; }
-    public ICollection<string> Category { get; set; }
+    public ICollection<int> Category { get; set; }
 }

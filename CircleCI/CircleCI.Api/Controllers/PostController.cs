@@ -58,19 +58,16 @@ public class PostController : BaseController
             {
                 return Unauthorized();
             }
-            var post = new Post()
-            {
-                UserId = userId,
-                CreatedAt = DateTime.UtcNow,
-                Title = request.Title,
-                Content = request.Content,
-                ImageUrl = await _cloudStorage.UploadFileAsync(request.ImageUrl, _cloudStorage.GetFileName()),
-                Category = request.Categories.Select(categoryName => new Category()
-                {
-                    Name = categoryName
-                }).ToList()
-            };
 
+            var post = _mapper.Map<Post>(request);
+            var category = await _unitOfWork.CategoriesList.GetCategoriesByIdAsync(request.Categories);
+            
+            post.ImageUrl = await _cloudStorage.UploadFileAsync(request.ImageUrl, _cloudStorage.GetFileName());
+            post.UserId = userId;
+            post.Category = category.Select(c => new Category()
+            {
+                CategoryId = c.Id,
+            }).ToList();
             await _unitOfWork.Posts.Add(post);
             await _unitOfWork.CompleteAsync();
 

@@ -16,6 +16,7 @@ public class UnitOfWork : IUnitOfWork, IDisposable
     public ITokenRepository Tokens { get; }
     public IUserRepository Users { get; }
     public ISavedRepository Saves { get; }
+    public ICategoryListRepository CategoriesList { get; }
 
     public UnitOfWork(AppDbContext context, ILoggerFactory loggerFactory, IMapper mapper)
     {
@@ -30,6 +31,7 @@ public class UnitOfWork : IUnitOfWork, IDisposable
         Tokens = new TokenRepository(_context, logger, mapper);
         Users = new UserRepository(_context, logger, mapper);
         Saves = new SavedRepository(_context, logger, mapper);
+        CategoriesList = new CategoryListRepository(_context, logger, mapper);
     }
     
     public async Task<bool> CompleteAsync()
