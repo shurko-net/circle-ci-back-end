@@ -2,6 +2,7 @@ using CircleCI.Api.Configuration;
 using Google.Apis.Auth.OAuth2;
 using Google.Cloud.Storage.V1;
 using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
 
 namespace CircleCI.Api.Services.ImageStorageService;
 
@@ -13,7 +14,8 @@ public class CloudStorage : ICloudStorage
     public CloudStorage(IOptions<GoogleConfig> googleConfig)
     {
         var googleConfiguration = googleConfig.Value;
-        var googleCredential = GoogleCredential.FromFile(googleConfiguration.GoogleCredentialFile);
+        var json = JsonConvert.SerializeObject(googleConfiguration.GoogleCredential);
+        var googleCredential = GoogleCredential.FromJson(json);
         _storageClient = StorageClient.Create(googleCredential);
         _bucketName = googleConfiguration.GoogleCloudStorageBucket;
     }
