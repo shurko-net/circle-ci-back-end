@@ -29,24 +29,4 @@ public class CategoryRepository : GenericRepository<Category>, ICategoryReposito
             throw;
         }
     }
-
-    public async Task<bool> AddRange(IEnumerable<Category> categories)
-    {
-        await _dbSet.AddRangeAsync(categories);
-        return true;
-    }
-
-    // TODO - Добавить функционал поиска
-    public async Task<IEnumerable<Category>> TagSearch(int postId)
-    {
-        try
-        {
-            return new List<Category>();
-        }
-        catch (Exception e)
-        {
-            _logger.LogError(e, "{Repo} TagSearch function error", typeof(CategoryRepository));
-            throw;
-        }
-    }
 }

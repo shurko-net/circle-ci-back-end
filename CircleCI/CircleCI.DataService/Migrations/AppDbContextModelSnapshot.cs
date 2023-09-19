@@ -31,18 +31,40 @@ namespace CircleCI.DataService.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("int");
 
                     b.Property<int>("PostId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CategoryId");
+
                     b.HasIndex("PostId");
 
                     b.ToTable("Categories");
+                });
+
+            modelBuilder.Entity("CircleCI.Entities.DbSet.CategoryList", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ImageUrl")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("CategoriesList");
                 });
 
             modelBuilder.Entity("CircleCI.Entities.DbSet.Comment", b =>
@@ -261,11 +283,19 @@ namespace CircleCI.DataService.Migrations
 
             modelBuilder.Entity("CircleCI.Entities.DbSet.Category", b =>
                 {
+                    b.HasOne("CircleCI.Entities.DbSet.CategoryList", "CategoryList")
+                        .WithMany("Categories")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("CircleCI.Entities.DbSet.Post", "Post")
                         .WithMany("Category")
                         .HasForeignKey("PostId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("CategoryList");
 
                     b.Navigation("Post");
                 });
@@ -366,6 +396,11 @@ namespace CircleCI.DataService.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("CircleCI.Entities.DbSet.CategoryList", b =>
+                {
+                    b.Navigation("Categories");
                 });
 
             modelBuilder.Entity("CircleCI.Entities.DbSet.Post", b =>

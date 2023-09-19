@@ -13,6 +13,7 @@ public class AppDbContext : DbContext
     public DbSet<Comment> Comments { get; set; }
     public DbSet<Like> Likes { get; set; }
     public DbSet<Saved> Saves { get; set; }
+    public DbSet<CategoryList> CategoriesList { get; set; }
 
     public AppDbContext(DbContextOptions<AppDbContext> options)
         :base(options){}
@@ -82,5 +83,10 @@ public class AppDbContext : DbContext
             .WithOne(e => e.Post)
             .HasForeignKey(e => e.PostId)
             .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<CategoryList>()
+            .HasMany(e => e.Categories)
+            .WithOne(e => e.CategoryList)
+            .HasForeignKey(e => e.CategoryId);
     }
 }

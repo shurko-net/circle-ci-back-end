@@ -10,6 +10,7 @@ public interface IUnitOfWork
     ITokenRepository Tokens { get; }
     IUserRepository Users { get; }
     ISavedRepository Saves { get; }
+    ICategoryListRepository CategoriesList { get; }
 
     Task<bool> CompleteAsync();
 }
