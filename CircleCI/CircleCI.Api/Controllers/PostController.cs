@@ -58,11 +58,23 @@ public class PostController : BaseController
             {
                 return Unauthorized();
             }
-
+            
             var post = _mapper.Map<Post>(request);
-            var category = await _unitOfWork.CategoriesList.GetCategoriesByIdAsync(request.Categories);
+            var category = await _unitOfWork.CategoriesList.GetCategoriesByIdAsync(
+                new List<int>(request.Categories
+                    .Split(",")
+                    .Select(s => int.Parse(s))
+                    .ToList()));
 
-            post.ImageUrl = string.Empty;
+            if (request.File == null)
+            {
+                post.ImageUrl = string.Empty;
+            }
+            else
+            {
+                post.ImageUrl = await _cloudStorage.UploadFileAsync(request.File, _cloudStorage.GetFileName());
+            }
+            
             post.UserId = userId;
             post.Category = category.Select(c => new Category()
             {
@@ -81,23 +93,6 @@ public class PostController : BaseController
         }
 
         return BadRequest();
-    }
-
-    [HttpPut("upload-post-image")]
-    public async Task<IActionResult> UploadImage([FromBody] UploadPostImageRequest request)
-    {
-        var post = await _unitOfWork.Posts.GetById(request.PostId);
-
-        if (post == null)
-        {
-            return NotFound("Post not found");
-        }
-
-        post.ImageUrl = await _cloudStorage.UploadFileAsync(request.File, _cloudStorage.GetFileName());
-        await _unitOfWork.Posts.Update(post);
-        await _unitOfWork.CompleteAsync();
-        
-        return NoContent();
     }
     
     [HttpPut("like/{postId}")]
