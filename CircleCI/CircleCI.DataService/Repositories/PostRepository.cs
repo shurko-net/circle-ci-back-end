@@ -88,10 +88,10 @@ public class PostRepository : GenericRepository<Post>, IPostRepository
                 return false;
 
             result.Content = post.Content;
-            result.CreatedAt = DateTime.UtcNow;
             result.Title = post.Title;
             result.ImageUrl = post.ImageUrl;
             result.LikesAmount = post.LikesAmount;
+            result.ViewsAmount = post.ViewsAmount;
             
             return true;
         }

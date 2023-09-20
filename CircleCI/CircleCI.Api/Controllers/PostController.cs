@@ -174,4 +174,21 @@ public class PostController : BaseController
 
         return Ok(mappedPost);
     }
+
+    [HttpPut("update-views/{postId}")]
+    public async Task<IActionResult> UpdateViews(int postId)
+    {
+        var post = await _unitOfWork.Posts.GetById(postId);
+
+        if (post == null)
+        {
+            return NotFound("Post not found");
+        }
+
+        post.ViewsAmount++;
+        await _unitOfWork.Posts.Update(post);
+        await _unitOfWork.CompleteAsync();
+
+        return NoContent();
+    }
 }
