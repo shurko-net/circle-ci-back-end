@@ -48,7 +48,7 @@ public class PostController : BaseController
         return Ok(posts);
     }
     [HttpPost("create-post")]
-    public async Task<IActionResult> CreatePost([FromBody] CreatePostRequest request)
+    public async Task<IActionResult> CreatePost([FromForm] CreatePostRequest request)
     {
         if (ModelState.IsValid)
         {
@@ -60,11 +60,18 @@ public class PostController : BaseController
             }
             
             var post = _mapper.Map<Post>(request);
-            var category = await _unitOfWork.CategoriesList.GetCategoriesByIdAsync(
-                new List<int>(request.Categories
+            List<int> categories = new();
+            try
+            {
+                categories = new List<int>(request.Categories
                     .Split(",")
-                    .Select(s => int.Parse(s))
-                    .ToList()));
+                    .Select(int.Parse)
+                    .ToList());
+            }
+            catch(FormatException)
+            {
+                return BadRequest("Categories has invalid values");
+            }
 
             if (request.File == null)
             {
@@ -74,7 +81,8 @@ public class PostController : BaseController
             {
                 post.ImageUrl = await _cloudStorage.UploadFileAsync(request.File, _cloudStorage.GetFileName());
             }
-            
+
+            var category = await _unitOfWork.CategoriesList.GetCategoriesByIdAsync(categories);
             post.UserId = userId;
             post.Category = category.Select(c => new Category()
             {
