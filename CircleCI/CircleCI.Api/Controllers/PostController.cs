@@ -62,7 +62,7 @@ public class PostController : BaseController
             var post = _mapper.Map<Post>(request);
             var category = await _unitOfWork.CategoriesList.GetCategoriesByIdAsync(request.Categories);
 
-            post.ImageUrl = await _cloudStorage.UploadFileAsync(request.ImageUrl, _cloudStorage.GetFileName());
+            post.ImageUrl = string.Empty;
             post.UserId = userId;
             post.Category = category.Select(c => new Category()
             {
@@ -82,6 +82,24 @@ public class PostController : BaseController
 
         return BadRequest();
     }
+
+    [HttpPut("upload-post-image")]
+    public async Task<IActionResult> UploadImage([FromBody] UploadPostImageRequest request)
+    {
+        var post = await _unitOfWork.Posts.GetById(request.PostId);
+
+        if (post == null)
+        {
+            return NotFound("Post not found");
+        }
+
+        post.ImageUrl = await _cloudStorage.UploadFileAsync(request.File, _cloudStorage.GetFileName());
+        await _unitOfWork.Posts.Update(post);
+        await _unitOfWork.CompleteAsync();
+        
+        return NoContent();
+    }
+    
     [HttpPut("like/{postId}")]
     public async Task<IActionResult> LikeOnPost(int postId)
     {
