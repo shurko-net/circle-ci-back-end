@@ -8,6 +8,7 @@ using CircleCI.DataService.DbInitializer;
 using CircleCI.DataService.Repositories;
 using CircleCI.DataService.Repositories.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.CookiePolicy;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -28,12 +29,12 @@ builder.Services.AddControllers().AddJsonOptions(options =>
 
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy(name: myAllowSpecificOrigins, 
-        policyBuilder => policyBuilder.WithMethods("POST", "PUT", "GET", "DELETE")
-            .AllowAnyHeader()
-            .WithExposedHeaders("x-total-count")
-            .AllowCredentials().
-            SetIsOriginAllowed((hosts) => true));
+    options.AddPolicy(name: myAllowSpecificOrigins,
+        policyBuilder =>
+            policyBuilder.WithOrigins("http://localhost:3000")
+                .AllowAnyHeader()
+                .AllowCredentials()
+                .WithExposedHeaders("x-total-count"));
 });
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
@@ -112,7 +113,7 @@ app.UseAuthorization();
 app.UseCookiePolicy(new CookiePolicyOptions()
 {
     MinimumSameSitePolicy = SameSiteMode.Strict,
-    //HttpOnly = HttpOnlyPolicy.Always,
+    HttpOnly = HttpOnlyPolicy.Always,
     Secure = CookieSecurePolicy.Always
 });
 

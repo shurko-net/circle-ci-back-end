@@ -32,6 +32,8 @@ public class CategoryListRepository : GenericRepository<CategoryList>, ICategory
         try
         {
             return await _dbSet.Where(c => c.Name.Contains(query))
+                .OrderByDescending(c => c.Name.StartsWith(query))
+                .ThenBy(c => c)
                 .AsNoTracking()
                 .ToListAsync();
         }

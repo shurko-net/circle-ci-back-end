@@ -81,8 +81,10 @@ public class UserRepository : GenericRepository<User>, IUserRepository
         try
         {
             const int pageSize = 5;
-            var result = await _dbSet.Where(u => u.Name.Contains(query) 
-                                                 || u.Surname.Contains(query))
+            var result = await _dbSet.Where(u => u.Name.StartsWith(query) 
+                                                 || u.Surname.StartsWith(query))
+                .OrderBy(u => u.Name)
+                .ThenBy(u => u.Surname)
                 .Skip((page ?? 0) * pageSize)
                 .Take(5)
                 .AsSplitQuery()
