@@ -9,7 +9,7 @@ public class UserIdentifire : IUserIdentifire
     {
         try
         {
-            string accessToken = request.Cookies["X-Access-Token"];
+            string? accessToken = request.Cookies["X-Access-Token"];
 
             if (string.IsNullOrEmpty(accessToken))
                 return 0;
