@@ -23,7 +23,7 @@ public class PostController : BaseController
     [HttpGet("get-post/{postId}")]
     public async Task<IActionResult> GetPost(int postId)
     {
-        var userId = _userIdentifire.GetIdByToken(Request);
+        var userId = _userIdentifire.GetIdByHeader(HttpContext);
         var post = await _unitOfWork.Posts.GetByIdMapped(postId, userId);
 
         if (post == null)
@@ -35,7 +35,7 @@ public class PostController : BaseController
     [HttpGet("get-posts/{page?}")]
     public async Task<IActionResult> GetPosts(int page = 0)
     {
-        var userId = _userIdentifire.GetIdByToken(Request);
+        var userId = _userIdentifire.GetIdByHeader(HttpContext);
         var posts = await _unitOfWork.Posts.KeySetPage(page, userId);
         int postAmount = await _unitOfWork.Posts.PostsAmount();
         Response.Headers.Add("x-total-count", postAmount.ToString());
@@ -52,7 +52,7 @@ public class PostController : BaseController
     {
         if (ModelState.IsValid)
         {
-            var userId = _userIdentifire.GetIdByToken(Request);
+            var userId = _userIdentifire.GetIdByHeader(HttpContext);
             
             if (userId == 0)
             {
@@ -106,7 +106,7 @@ public class PostController : BaseController
     [HttpPut("like/{postId}")]
     public async Task<IActionResult> LikeOnPost(int postId)
     {
-        var userId = _userIdentifire.GetIdByToken(Request);
+        var userId = _userIdentifire.GetIdByHeader(HttpContext);
         var like = await _unitOfWork.Likes.GetById(userId, postId);
         var post = await _unitOfWork.Posts.GetById(postId);
 
@@ -144,11 +144,11 @@ public class PostController : BaseController
     [HttpPut("save/{postId}")]
     public async Task<IActionResult> SavePost(int postId)
     {
-        var userId = _userIdentifire.GetIdByToken(Request);
+        var userId = _userIdentifire.GetIdByHeader(HttpContext);
         var save = await _unitOfWork.Saves.GetById(userId, postId);
         var post = await _unitOfWork.Posts.GetById(postId);
 
-        GetPostResponse? mappedPost = new();
+        GetPostResponse? mappedPost;
             
         if (post == null)
             return NotFound("Post not found");

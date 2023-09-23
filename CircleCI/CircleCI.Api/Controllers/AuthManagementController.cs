@@ -85,6 +85,7 @@ public class AuthManagementController : BaseController
             new CookieOptions
             {
                 Expires = DateTime.UtcNow.AddDays(30),
+                Path = "/api/auth/refresh"
             });
     }
     
@@ -166,10 +167,13 @@ public class AuthManagementController : BaseController
     [HttpPost("logout")]
     public async Task<IActionResult> Logout()
     {
-        var token = await _unitOfWork.Tokens.GetUserToken(_userIdentifire.GetIdByToken(Request));
+        var token = await _unitOfWork.Tokens.GetUserToken(_userIdentifire.GetIdByHeader(HttpContext));
         
-        Response.Cookies.Delete("X-Access-Token");
-
+        Response.Cookies.Delete("X-Access-Token", new CookieOptions
+            {
+                Expires = DateTime.UtcNow.AddYears(-1),
+                Path = "/api/auth/refresh"
+            });
         token.RefreshToken = string.Empty;
         await _unitOfWork.Tokens.Update(token);
         await _unitOfWork.CompleteAsync();
@@ -181,7 +185,7 @@ public class AuthManagementController : BaseController
     [HttpGet("refresh")]
     public async Task<IActionResult> Refresh()
     {
-        var userId = _userIdentifire.GetIdByToken(Request);
+        var userId = _userIdentifire.GetIdByCookie(Request);
         var accessToken = Request.Cookies["X-Access-Token"];
         
         if (string.IsNullOrEmpty(accessToken))

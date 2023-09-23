@@ -24,7 +24,7 @@ public class UserImageController : BaseController
     [HttpGet("get-user-image")]
     public async Task<IActionResult> GetImage()
     {
-        var user = await _unitOfWork.Users.GetByIdAsync(_userIdentifire.GetIdByToken(Request));
+        var user = await _unitOfWork.Users.GetByIdAsync(_userIdentifire.GetIdByHeader(HttpContext));
 
         if (user == null)
         {
@@ -39,7 +39,7 @@ public class UserImageController : BaseController
     [HttpPost("upload-user-image")]
     public async Task<IActionResult> AddImage(IFormFile file)
     {
-        var user = await _unitOfWork.Users.GetByIdAsync(_userIdentifire.GetIdByToken(Request));
+        var user = await _unitOfWork.Users.GetByIdAsync(_userIdentifire.GetIdByHeader(HttpContext));
         
         if (user == null)
         {
@@ -61,7 +61,7 @@ public class UserImageController : BaseController
     [HttpDelete("delete-user-image")]
     public async Task<IActionResult> DeleteImage()
     {
-        var user = await _unitOfWork.Users.GetByIdAsync(_userIdentifire.GetIdByToken(Request));
+        var user = await _unitOfWork.Users.GetByIdAsync(_userIdentifire.GetIdByHeader(HttpContext));
         if (user == null)
         {
             return Unauthorized();
@@ -82,7 +82,7 @@ public class UserImageController : BaseController
     [HttpGet("get-user-backimage")]
     public async Task<IActionResult> GetBackImage()
     {
-        var user = await _unitOfWork.Users.GetByIdAsync(_userIdentifire.GetIdByToken(Request));
+        var user = await _unitOfWork.Users.GetByIdAsync(_userIdentifire.GetIdByHeader(HttpContext));
 
         if (user == null)
         {
@@ -97,7 +97,7 @@ public class UserImageController : BaseController
     [HttpPost("upload-user-backimage")]
     public async Task<IActionResult> AddBackImage(IFormFile file)
     {
-        var user = await _unitOfWork.Users.GetByIdAsync(_userIdentifire.GetIdByToken(Request));
+        var user = await _unitOfWork.Users.GetByIdAsync(_userIdentifire.GetIdByHeader(HttpContext));
         
         if (user == null)
         {
@@ -119,7 +119,7 @@ public class UserImageController : BaseController
     [HttpDelete("delete-user-backimage")]
     public async Task<IActionResult> DeleteBackImage()
     {
-        var user = await _unitOfWork.Users.GetByIdAsync(_userIdentifire.GetIdByToken(Request));
+        var user = await _unitOfWork.Users.GetByIdAsync(_userIdentifire.GetIdByHeader(HttpContext));
         if (user == null)
         {
             return Unauthorized();

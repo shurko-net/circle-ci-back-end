@@ -4,7 +4,6 @@ using CircleCI.DataService.Repositories.Interfaces;
 using CircleCI.Entities.DbSet;
 using CircleCI.Entities.DTOs.Responses;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
 
 namespace CircleCI.Api.Controllers;
 
@@ -24,7 +23,7 @@ public class UserController : BaseController
     {
         if (userId == 0)
         {
-            var owner = await _unitOfWork.Users.GetByIdAsync(_userIdentifire.GetIdByToken(Request));
+            var owner = await _unitOfWork.Users.GetByIdAsync(_userIdentifire.GetIdByHeader(HttpContext));
 
             return Ok(_mapper.Map<UserResponse>(owner));
         }
@@ -40,7 +39,7 @@ public class UserController : BaseController
     [HttpGet("is-sub/{followedId}")]
     public async Task<IActionResult> IsSubscribe(int followedId)
     {
-        var userId = _userIdentifire.GetIdByToken(Request);
+        var userId = _userIdentifire.GetIdByHeader(HttpContext);
 
         return Ok(new
         {
@@ -52,10 +51,13 @@ public class UserController : BaseController
     [HttpPut("follow/{followableId}")]
     public async Task<IActionResult> SubscribeUser(int followableId)
     {
-        var userId = _userIdentifire.GetIdByToken(Request);
+        var userId = _userIdentifire.GetIdByHeader(HttpContext);
         var follow = await _unitOfWork.Follows.GetById(userId, followableId);
         var user = await _unitOfWork.Users.GetByIdAsync(userId);
-        UserResponse mappedUser = new();
+        UserResponse mappedUser;
+
+        if (user == null)
+            return NotFound("User doesnt exist");
         
         if (follow == null)
         {

@@ -5,7 +5,7 @@ namespace CircleCI.Api.Services.TokenService;
 
 public class UserIdentifire : IUserIdentifire
 {
-    public int GetIdByToken(HttpRequest request)
+    public int GetIdByCookie(HttpRequest request)
     {
         try
         {
@@ -30,5 +30,15 @@ public class UserIdentifire : IUserIdentifire
         {
             return 0;
         }
+    }
+
+    public int GetIdByHeader(HttpContext request)
+    {
+        var userId = request.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+
+        if (string.IsNullOrEmpty(userId))
+            return 0;
+
+        return Int32.TryParse(userId, out var id) ? id : 0;
     }
 }
