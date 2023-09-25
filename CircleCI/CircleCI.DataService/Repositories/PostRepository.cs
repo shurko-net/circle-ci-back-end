@@ -19,7 +19,7 @@ public class PostRepository : GenericRepository<Post>, IPostRepository
         try
         {
             var temp = await _dbSet.Include(p => p.User)
-                .ThenInclude(p => p.Followings)
+                .ThenInclude(p => p.Followers)
                 .Include(p => p.Category)
                 .ThenInclude(p => p.CategoryList)
                 .AsSplitQuery()
@@ -37,7 +37,8 @@ public class PostRepository : GenericRepository<Post>, IPostRepository
                                                                 l.UserId == userId);
             result.IsSaved = await _context.Saves.AnyAsync(l => l.PostId == result.Id &&
                                                                 l.UserId == userId);
-            result.IsFollow = !result.IsPostOwner && temp.User.Followings.Any(u => u.FollowedUserId == userId);
+            result.IsFollow = temp.User.Followers.Any(u => u.FollowerUserId == userId
+                                       && u.FollowedUserId == result.UserId);;
             
             return result;
         }
@@ -113,7 +114,7 @@ public class PostRepository : GenericRepository<Post>, IPostRepository
                 .Include(b => b.Category)
                 .ThenInclude(b => b.CategoryList)
                 .Include(b => b.User)
-                .ThenInclude(b => b.Followings)
+                .ThenInclude(b => b.Followers)
                 .Take(pageSize)
                 .AsSplitQuery()
                 .ToListAsync();

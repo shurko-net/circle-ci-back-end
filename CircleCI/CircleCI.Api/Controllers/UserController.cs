@@ -32,7 +32,7 @@ public class UserController : BaseController
 
         if (user == null)
             return NotFound("User not found");
-        
+
         return Ok(_mapper.Map<UserResponse>(user));
     }
     
@@ -52,6 +52,9 @@ public class UserController : BaseController
     public async Task<IActionResult> SubscribeUser(int followableId)
     {
         var userId = _userIdentifire.GetIdByHeader(HttpContext);
+        if (followableId == userId)
+            return BadRequest("Сan`t subscribe to yourself");
+        
         var follow = await _unitOfWork.Follows.GetById(userId, followableId);
         var user = await _unitOfWork.Users.GetByIdAsync(followableId);
         UserResponse mappedUser;
