@@ -34,6 +34,7 @@ builder.Services.AddCors(options =>
             policyBuilder.WithOrigins("http://localhost:3000")
                 .AllowAnyHeader()
                 .AllowCredentials()
+                .AllowAnyMethod()
                 .WithExposedHeaders("x-total-count"));
 });
 
@@ -76,6 +77,7 @@ builder.Services.AddAuthentication(options =>
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration.GetSection("JwtConfiguration:AccessTokenSecret").Value!)),
     };
 });
+
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));

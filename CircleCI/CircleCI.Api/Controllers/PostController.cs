@@ -189,6 +189,10 @@ public class PostController : BaseController
         await _unitOfWork.Posts.Update(post);
         await _unitOfWork.CompleteAsync();
 
-        return NoContent();
+        return Ok(new
+        {
+            post.Id,
+            post.ViewsAmount
+        });
     }
 }
