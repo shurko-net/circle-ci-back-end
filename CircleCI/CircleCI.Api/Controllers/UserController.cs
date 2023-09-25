@@ -53,7 +53,7 @@ public class UserController : BaseController
     {
         var userId = _userIdentifire.GetIdByHeader(HttpContext);
         var follow = await _unitOfWork.Follows.GetById(userId, followableId);
-        var user = await _unitOfWork.Users.GetByIdAsync(userId);
+        var user = await _unitOfWork.Users.GetByIdAsync(followableId);
         UserResponse mappedUser;
 
         if (user == null)
@@ -64,8 +64,8 @@ public class UserController : BaseController
             user.FollowersAmount++;
             await _unitOfWork.Follows.Add(new Follow()
             {
-                FollowedUserId = followableId,
-                FollowerUserId = user.Id
+                FollowedUserId = user.Id,
+                FollowerUserId = userId
             });
             await _unitOfWork.Users.UpdateAsync(user);
             await _unitOfWork.CompleteAsync();

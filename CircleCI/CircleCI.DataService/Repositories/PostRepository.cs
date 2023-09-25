@@ -129,15 +129,15 @@ public class PostRepository : GenericRepository<Post>, IPostRepository
                                                                       l.UserId == userId);
                 pair.Mpt.IsSaved = await _context.Saves.AnyAsync(l => l.PostId == pair.Mpt.Id &&
                                                                       l.UserId == userId);
-                pair.Mpt.IsFollow = !pair.Mpt.IsPostOwner
-                                    && pair.Pt.User.Followings.Any(u => u.FollowedUserId == userId);
+                pair.Mpt.IsFollow = pair.Pt.User.Followers.Any(u => u.FollowerUserId == userId
+                                                                  && u.FollowedUserId == pair.Pt.UserId);
             }
             
             return mappedPosts;
         }
         catch (Exception e)
         {
-            _logger.LogError(e, "{Repo} KeysetPage function error", typeof(PostRepository));
+            _logger.LogError(e, "{Repo} KeySetPage function error", typeof(PostRepository));
             throw;
         }
     }
