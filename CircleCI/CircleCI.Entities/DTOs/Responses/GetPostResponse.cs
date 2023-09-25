@@ -17,8 +17,8 @@ public class GetPostResponse
     public string Surname { get; set; } = string.Empty;
     public string ProfileImageUrl { get; set; } = string.Empty;
     public bool IsPostOwner { get; set; }
-    public bool IsMyself { get; set; }
     public bool IsLiked { get; set; }
     public bool IsSaved { get; set; }
+    public bool IsFollow { get; set; }
     public IEnumerable<CategoryList> Category { get; set; }
 }

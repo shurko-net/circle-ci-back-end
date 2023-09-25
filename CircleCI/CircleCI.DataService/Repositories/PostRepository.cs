@@ -19,6 +19,7 @@ public class PostRepository : GenericRepository<Post>, IPostRepository
         try
         {
             var temp = await _dbSet.Include(p => p.User)
+                .ThenInclude(p => p.Followings)
                 .Include(p => p.Category)
                 .ThenInclude(p => p.CategoryList)
                 .AsSplitQuery()
@@ -34,9 +35,9 @@ public class PostRepository : GenericRepository<Post>, IPostRepository
             result.IsPostOwner = result.UserId == userId;
             result.IsLiked = await _context.Likes.AnyAsync(l => l.PostId == result.Id &&
                                                                 l.UserId == userId);
-            result.IsMyself = result.IsPostOwner;
             result.IsSaved = await _context.Saves.AnyAsync(l => l.PostId == result.Id &&
                                                                 l.UserId == userId);
+            result.IsFollow = !result.IsPostOwner && temp.User.Followings.Any(u => u.FollowedUserId == userId);
             
             return result;
         }
@@ -112,22 +113,24 @@ public class PostRepository : GenericRepository<Post>, IPostRepository
                 .Include(b => b.Category)
                 .ThenInclude(b => b.CategoryList)
                 .Include(b => b.User)
+                .ThenInclude(b => b.Followings)
                 .Take(pageSize)
                 .AsSplitQuery()
                 .ToListAsync();
+
+            var mappedPosts = _mapper.Map<IEnumerable<GetPostResponse>>(temp).ToList();
             
-            var mappedPosts = _mapper.Map<IEnumerable<GetPostResponse>>(temp);
-            
-            foreach (var post in mappedPosts)
+            foreach (var pair in temp.Zip(mappedPosts, (pt, mpt) => new { Pt = pt, Mpt = mpt}))
             {
-                post.LikesAmount = await _context.Likes.CountAsync(c => c.PostId == post.Id);
-                post.CommentsAmount = await _context.Comments.CountAsync(c => c.PostId == post.Id);
-                post.IsPostOwner = post.UserId == userId;
-                post.IsLiked = await _context.Likes.AnyAsync(l => l.PostId == post.Id &&
-                                                                  l.UserId == userId);
-                post.IsMyself = post.IsPostOwner;
-                post.IsSaved = await _context.Saves.AnyAsync(l => l.PostId == post.Id &&
-                                                                  l.UserId == userId);
+                pair.Mpt.LikesAmount = await _context.Likes.CountAsync(c => c.PostId == pair.Mpt.Id);
+                pair.Mpt.CommentsAmount = await _context.Comments.CountAsync(c => c.PostId == pair.Mpt.Id);
+                pair.Mpt.IsPostOwner = pair.Mpt.UserId == userId;
+                pair.Mpt.IsLiked = await _context.Likes.AnyAsync(l => l.PostId == pair.Mpt.Id &&
+                                                                      l.UserId == userId);
+                pair.Mpt.IsSaved = await _context.Saves.AnyAsync(l => l.PostId == pair.Mpt.Id &&
+                                                                      l.UserId == userId);
+                pair.Mpt.IsFollow = !pair.Mpt.IsPostOwner
+                                    && pair.Pt.User.Followings.Any(u => u.FollowedUserId == userId);
             }
             
             return mappedPosts;
