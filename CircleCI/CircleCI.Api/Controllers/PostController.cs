@@ -36,7 +36,7 @@ public class PostController : BaseController
     public async Task<IActionResult> GetPosts(int page = 0)
     {
         var userId = _userIdentifire.GetIdByHeader(HttpContext);
-        var posts = await _unitOfWork.Posts.KeySetPage(page, userId);
+        var posts = await _unitOfWork.Posts.KeySetPage(page, userId, false);
         int postAmount = await _unitOfWork.Posts.PostsAmount();
         Response.Headers.Add("x-total-count", postAmount.ToString());
         
@@ -47,6 +47,23 @@ public class PostController : BaseController
         
         return Ok(posts);
     }
+
+    [HttpGet("get-user-posts/{page?}")]
+    public async Task<IActionResult> GetUserPosts(int page = 0)
+    {
+        var userId = _userIdentifire.GetIdByHeader(HttpContext);
+        var posts = await _unitOfWork.Posts.KeySetPage(page, userId, true);
+        var postAmount = await _unitOfWork.Posts.PostsAmount();
+        Response.Headers.Add("x-total-count", postAmount.ToString());
+        
+        if (!posts.Any())
+        {
+            return NotFound("Posts not found");
+        }
+        
+        return Ok(posts);
+    }
+    
     [HttpPost("create-post")]
     public async Task<IActionResult> CreatePost([FromForm] CreatePostRequest request)
     {

@@ -104,7 +104,7 @@ public class PostRepository : GenericRepository<Post>, IPostRepository
         }
     }
 
-    public async Task<IEnumerable<GetPostResponse?>> KeySetPage(int? page, int userId)
+    public async Task<IEnumerable<GetPostResponse?>> KeySetPage(int? page, int userId, bool isProfile)
     {
         try
         {
@@ -119,6 +119,9 @@ public class PostRepository : GenericRepository<Post>, IPostRepository
                 .AsSplitQuery()
                 .ToListAsync();
 
+            if(isProfile)
+                temp = temp.Where(p => p.UserId == userId).ToList();
+            
             var mappedPosts = _mapper.Map<IEnumerable<GetPostResponse>>(temp).ToList();
             
             foreach (var pair in temp.Zip(mappedPosts, (pt, mpt) => new { Pt = pt, Mpt = mpt}))
