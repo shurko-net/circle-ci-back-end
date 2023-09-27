@@ -11,6 +11,7 @@ public class DomainToResponse : Profile
         CreateMap<User, UserAuthResponse>();
 
         CreateMap<User, UserResponse>();
+        CreateMap<User, UserProfileResponse>();
 
         CreateMap<Post, GetPostResponse>()
             .ForMember(dest => dest.Name,

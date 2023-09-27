@@ -2,6 +2,7 @@ using AutoMapper;
 using CircleCI.DataService.Data;
 using CircleCI.DataService.Repositories.Interfaces;
 using CircleCI.Entities.DbSet;
+using CircleCI.Entities.DTOs.Responses;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
@@ -100,6 +101,31 @@ public class UserRepository : GenericRepository<User>, IUserRepository
         catch (Exception e)
         {
             _logger.LogError(e, "{Repo} SearchByInitial function error", typeof(UserRepository));
+            throw;
+        }
+    }
+
+    public async Task<UserProfileResponse?> GetUserProfileAsync(int requestUserId, int ownerId)
+    {
+        try
+        {
+            var user = await _dbSet.FirstOrDefaultAsync(u => u.Id == ownerId);
+
+            if (user == null)
+                return null;
+
+            var result = _mapper.Map<UserProfileResponse>(user);
+            result.CommentsAmount = await _context.Comments.CountAsync(u => u.UserId == ownerId);
+            result.PostsAmount = await _context.Posts.CountAsync(u => u.UserId == ownerId);
+            result.IsMyself = requestUserId == ownerId;
+            result.IsFollowed = await _context.Follows.AnyAsync(u => u.FollowerUserId == ownerId
+                                                                     && u.FollowedUserId == requestUserId);
+            
+            return result;
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e, "{Repo} GetUserProfileAsync function error", typeof(UserRepository));
             throw;
         }
     }

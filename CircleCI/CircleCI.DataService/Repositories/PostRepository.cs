@@ -38,7 +38,7 @@ public class PostRepository : GenericRepository<Post>, IPostRepository
             result.IsSaved = await _context.Saves.AnyAsync(l => l.PostId == result.Id &&
                                                                 l.UserId == userId);
             result.IsFollow = temp.User.Followers.Any(u => u.FollowerUserId == userId
-                                       && u.FollowedUserId == result.UserId);;
+                                       && u.FollowedUserId == result.UserId);
             
             return result;
         }

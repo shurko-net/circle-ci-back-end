@@ -19,21 +19,24 @@ public class UserController : BaseController
     }
 
     [HttpGet("get-user/{userId?}")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(UserResponse))]
     public async Task<IActionResult> GetUser(int userId = 0)
     {
+        var ownerId = _userIdentifire.GetIdByHeader(HttpContext);
+        
         if (userId == 0)
         {
-            var owner = await _unitOfWork.Users.GetByIdAsync(_userIdentifire.GetIdByHeader(HttpContext));
+            var owner = await _unitOfWork.Users.GetUserProfileAsync(ownerId, ownerId);
 
-            return Ok(_mapper.Map<UserResponse>(owner));
+            return Ok(owner);
         }
         
-        var user = await _unitOfWork.Users.GetByIdAsync(userId);
+        var user = await _unitOfWork.Users.GetUserProfileAsync(userId, ownerId);
 
         if (user == null)
             return NotFound("User not found");
 
-        return Ok(_mapper.Map<UserResponse>(user));
+        return Ok(user);
     }
     
     [HttpGet("is-sub/{followedId}")]
