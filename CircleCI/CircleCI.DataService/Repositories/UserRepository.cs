@@ -109,7 +109,7 @@ public class UserRepository : GenericRepository<User>, IUserRepository
     {
         try
         {
-            var user = await _dbSet.FirstOrDefaultAsync(u => u.Id == ownerId);
+            var user = await _dbSet.FirstOrDefaultAsync(u => u.Id == requestUserId);
 
             if (user == null)
                 return null;

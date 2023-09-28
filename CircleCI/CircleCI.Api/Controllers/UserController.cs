@@ -19,7 +19,6 @@ public class UserController : BaseController
     }
 
     [HttpGet("get-user/{userId?}")]
-    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(UserResponse))]
     public async Task<IActionResult> GetUser(int userId = 0)
     {
         var ownerId = _userIdentifire.GetIdByHeader(HttpContext);

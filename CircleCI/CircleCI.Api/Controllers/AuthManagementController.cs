@@ -117,7 +117,7 @@ public class AuthManagementController : BaseController
 
             return Ok(new
             {
-                User = _mapper.Map<UserAuthResponse>(user),
+                User = _mapper.Map<UserResponse>(user),
                 accessToken,
             });
         }
@@ -156,7 +156,7 @@ public class AuthManagementController : BaseController
 
             return Ok(new
             {
-                User = _mapper.Map<UserAuthResponse>(user),
+                User = _mapper.Map<UserResponse>(user),
                 accessToken,
             });
         }
@@ -219,14 +219,14 @@ public class AuthManagementController : BaseController
             
             return Ok(new
             {
-                User = _mapper.Map<UserAuthResponse>(user),
+                User = _mapper.Map<UserResponse>(user),
                 accessToken
             });
         }
         
         return Ok(new
         {
-            User = _mapper.Map<UserAuthResponse>(user),
+            User = _mapper.Map<UserResponse>(user),
             accessToken,
         });
     }

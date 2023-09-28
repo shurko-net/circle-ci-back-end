@@ -8,8 +8,6 @@ public class DomainToResponse : Profile
 {
     public DomainToResponse()
     {
-        CreateMap<User, UserAuthResponse>();
-
         CreateMap<User, UserResponse>();
         CreateMap<User, UserProfileResponse>();
 

@@ -55,7 +55,7 @@ public class UserImageController : BaseController
         await _unitOfWork.Users.UpdateAsync(user);
         await _unitOfWork.CompleteAsync();
         
-        return Ok(_mapper.Map<UserAuthResponse>(user));
+        return Ok(_mapper.Map<UserResponse>(user));
     }
 
     [HttpDelete("delete-user-image")]
@@ -113,7 +113,7 @@ public class UserImageController : BaseController
         await _unitOfWork.Users.UpdateAsync(user);
         await _unitOfWork.CompleteAsync();
         
-        return Ok(_mapper.Map<UserAuthResponse>(user));
+        return Ok(_mapper.Map<UserResponse>(user));
     }
 
     [HttpDelete("delete-user-backimage")]
