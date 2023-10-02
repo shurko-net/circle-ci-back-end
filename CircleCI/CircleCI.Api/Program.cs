@@ -33,8 +33,8 @@ builder.Services.AddCors(options =>
         policyBuilder =>
             policyBuilder.WithOrigins("http://localhost:3000")
                 .AllowAnyHeader()
-                .AllowCredentials()
                 .AllowAnyMethod()
+                .AllowCredentials()
                 .WithExposedHeaders("x-total-count"));
 });
 
@@ -121,7 +121,7 @@ app.UseAuthorization();
 
 app.MapControllers();
 SeedDatabase();
-app.Run();
+await app.RunAsync();
 
 void SeedDatabase()
 {

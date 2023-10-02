@@ -42,7 +42,7 @@ public class AuthManagementController : BaseController
 
         var token = new JwtSecurityToken(
             claims: claims,
-            expires: isAccess ? DateTime.UtcNow.AddMinutes(10) : DateTime.UtcNow.AddDays(10), // TODO - AddMinutes must equal 1
+            expires: isAccess ? DateTime.UtcNow.AddMinutes(1) : DateTime.UtcNow.AddDays(10),
             signingCredentials: credentials
             );
 
