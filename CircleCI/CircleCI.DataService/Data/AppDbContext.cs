@@ -20,8 +20,6 @@ public class AppDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.UseCollation("Ukrainian_CI_AS");
-
         modelBuilder.Entity<User>()
             .HasOne(e => e.Token)
             .WithOne(e => e.User)

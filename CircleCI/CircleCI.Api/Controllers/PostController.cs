@@ -48,11 +48,14 @@ public class PostController : BaseController
         return Ok(posts);
     }
 
-    [HttpGet("get-user-posts/{page?}")]
-    public async Task<IActionResult> GetUserPosts(int page = 0)
+    [HttpGet("get-user-posts/{userId?}/{page?}")]
+    public async Task<IActionResult> GetUserPosts(int page = 0, int userId = 0)
     {
-        var userId = _userIdentifire.GetIdByHeader(HttpContext);
+        userId = userId == 0 ? userId
+            : _userIdentifire.GetIdByHeader(HttpContext);
+        
         var posts = await _unitOfWork.Posts.KeySetPage(page, userId, true);
+        
         var postAmount = await _unitOfWork.Posts.PostsAmount();
         Response.Headers.Add("x-total-count", postAmount.ToString());
         

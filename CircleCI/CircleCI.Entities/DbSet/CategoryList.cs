@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace CircleCI.Entities.DbSet;
 
 public class CategoryList
