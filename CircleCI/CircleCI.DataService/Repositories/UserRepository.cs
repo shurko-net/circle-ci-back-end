@@ -129,4 +129,21 @@ public class UserRepository : GenericRepository<User>, IUserRepository
             throw;
         }
     }
+
+    public async Task<IEnumerable<User>> GetPopularUserAsync()
+    {
+        try
+        {
+            var users = await _dbSet.OrderBy(u => u.Followers)
+                .Take(5)
+                .AsSplitQuery().ToListAsync();
+
+            return users;
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e, "{Repo} GetPopularUser function error", typeof(UserRepository));
+            throw;
+        }
+    }
 }

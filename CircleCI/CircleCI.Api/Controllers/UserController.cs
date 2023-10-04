@@ -98,6 +98,17 @@ public class UserController : BaseController
         });
     }
 
+    [HttpGet("get-popular-people")]
+    public async Task<IActionResult> GetPopularPeople()
+    {
+        var users = await _unitOfWork.Users.GetPopularUserAsync();
+
+        if (!users.Any())
+            return NotFound("Popular users doesnt found");
+        
+        return Ok(_mapper.Map<IEnumerable<UserResponse>>(users));
+    }
+    
     [HttpGet("search-user/{page?}/{query?}")]
     public async Task<IActionResult> SearchUser(int page = 0,string query = "")
     {
