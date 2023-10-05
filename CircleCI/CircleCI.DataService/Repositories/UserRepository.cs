@@ -134,7 +134,7 @@ public class UserRepository : GenericRepository<User>, IUserRepository
     {
         try
         {
-            var users = await _dbSet.OrderBy(u => u.Followers)
+            var users = await _dbSet.OrderBy(u => u.Followers.Count)
                 .Take(5)
                 .AsSplitQuery().ToListAsync();
 
