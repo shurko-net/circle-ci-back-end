@@ -9,5 +9,5 @@ public interface IPostRepository : IGenericRepository<Post>
     Task<bool> Update(Post post);
     Task<GetPostResponse?> GetByIdMapped(int postId, int userId);
     Task<Post?> GetById(int id);
-    Task<IEnumerable<GetPostResponse?>> KeySetPage(int? page, int userId, bool isProfile);
+    Task<IEnumerable<GetPostResponse?>> KeySetPage(int? page, int userId, bool isProfile = false, bool isSaved = false);
 }

@@ -2,6 +2,7 @@ using AutoMapper;
 using CircleCI.DataService.Data;
 using CircleCI.DataService.Repositories.Interfaces;
 using CircleCI.Entities.DbSet;
+using CircleCI.Entities.DTOs.Responses;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 

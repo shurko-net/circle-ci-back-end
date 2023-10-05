@@ -36,7 +36,7 @@ public class PostController : BaseController
     public async Task<IActionResult> GetPosts(int page = 0)
     {
         var userId = _userIdentifire.GetIdByHeader(HttpContext);
-        var posts = await _unitOfWork.Posts.KeySetPage(page, userId, false);
+        var posts = await _unitOfWork.Posts.KeySetPage(page, userId);
         int postAmount = await _unitOfWork.Posts.PostsAmount();
         Response.Headers.Add("x-total-count", postAmount.ToString());
         

@@ -104,7 +104,8 @@ public class PostRepository : GenericRepository<Post>, IPostRepository
         }
     }
 
-    public async Task<IEnumerable<GetPostResponse?>> KeySetPage(int? page, int userId, bool isProfile)
+    public async Task<IEnumerable<GetPostResponse?>> KeySetPage(
+        int? page, int userId, bool isProfile = false, bool isSaved = false)
     {
         try
         {
@@ -135,6 +136,11 @@ public class PostRepository : GenericRepository<Post>, IPostRepository
                                                                       l.UserId == userId);
                 pair.Mpt.IsFollow = pair.Pt.User.Followers.Any(u => u.FollowerUserId == userId
                                                                   && u.FollowedUserId == pair.Pt.UserId);
+            }
+
+            if (isSaved)
+            {
+                return mappedPosts.Where(p => p.IsSaved);
             }
             
             return mappedPosts;

@@ -126,4 +126,18 @@ public class UserController : BaseController
         
         return Ok(_mapper.Map<IEnumerable<UserResponse>>(list));
     }
+
+    [HttpGet("get-saved-posts/{page?}")]
+    public async Task<IActionResult> GetSavedPost(int page = 0)
+    {
+        var userId = _userIdentifire.GetIdByHeader(HttpContext);
+        var posts = await _unitOfWork.Posts.KeySetPage(page, userId, true, true);
+
+        if (!posts.Any())
+        {
+            return NotFound("Saved posts not found");
+        }
+
+        return Ok(posts);
+    }
 }
