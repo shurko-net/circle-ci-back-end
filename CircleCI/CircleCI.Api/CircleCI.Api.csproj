@@ -34,9 +34,8 @@
   <ItemGroup>
     <ProjectReference Include="..\CircleCI.DataService\CircleCI.DataService.csproj" />
     <ProjectReference Include="..\CircleCI.Entities\CircleCI.Entities.csproj" />
+    <ProjectReference Include="..\CircleCI.Services\CircleCI.Services.csproj" />
   </ItemGroup>
 
-
-
-
+  
 </Project>

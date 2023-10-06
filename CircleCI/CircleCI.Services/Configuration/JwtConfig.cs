@@ -1,8 +1,12 @@
-namespace CircleCI.Api.Configuration;
+namespace CircleCI.Services.Configuration;
 
 public class JwtConfig
+{ 
+    public JwtConfiguration JwtConfiguration { get; set; } = new();
+}
+
+public class JwtConfiguration
 {
-    public const string SectionName = "JwtConfiguration";
     public string AccessTokenSecret { get; set; } = string.Empty;
     public string RefreshTokenSecret { get; set; } = string.Empty;
 }

@@ -2,12 +2,12 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using AutoMapper;
-using CircleCI.Api.Configuration;
-using CircleCI.Api.Services.TokenService;
 using CircleCI.DataService.Repositories.Interfaces;
 using CircleCI.Entities.DbSet;
 using CircleCI.Entities.DTOs.Requests;
 using CircleCI.Entities.DTOs.Responses;
+using CircleCI.Services.Configuration;
+using CircleCI.Services.TokenService;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
@@ -36,7 +36,7 @@ public class AuthManagementController : BaseController
         };
 
         var key = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(
-            isAccess ? _jwtConfig.AccessTokenSecret : _jwtConfig.RefreshTokenSecret));
+            isAccess ? _jwtConfig.JwtConfiguration.AccessTokenSecret : _jwtConfig.JwtConfiguration.RefreshTokenSecret));
 
         var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
 
@@ -56,7 +56,7 @@ public class AuthManagementController : BaseController
         var tokenHandler = new JwtSecurityTokenHandler();
 
         var key = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(
-            isAccess ? _jwtConfig.AccessTokenSecret : _jwtConfig.RefreshTokenSecret));
+            isAccess ? _jwtConfig.JwtConfiguration.AccessTokenSecret : _jwtConfig.JwtConfiguration.RefreshTokenSecret));
 
         var tokenValidationParameters = new TokenValidationParameters
         {
@@ -201,7 +201,12 @@ public class AuthManagementController : BaseController
         }
         
         var user = await _unitOfWork.Users.GetByIdAsync(userId);
-
+        
+        if (user == null)
+        {
+            return Unauthorized();
+        }
+        
         if (!IsValidToken(token.RefreshToken, false))
         {
             token.RefreshToken = string.Empty;

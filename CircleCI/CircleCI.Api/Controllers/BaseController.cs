@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
-using CircleCI.Api.Services.TokenService;
 using CircleCI.DataService.Repositories.Interfaces;
+using CircleCI.Services.TokenService;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

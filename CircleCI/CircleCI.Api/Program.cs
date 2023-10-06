@@ -1,26 +1,43 @@
 using System.Text;
 using System.Text.Json.Serialization;
-using CircleCI.Api.Configuration;
-using CircleCI.Api.Services.ImageStorageService;
-using CircleCI.Api.Services.TokenService;
 using CircleCI.DataService.Data;
 using CircleCI.DataService.DbInitializer;
 using CircleCI.DataService.Repositories;
 using CircleCI.DataService.Repositories.Interfaces;
+using CircleCI.Services.Configuration;
+using CircleCI.Services.GoogleSecrets;
+using CircleCI.Services.ImageStorageService;
+using CircleCI.Services.TokenService;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.CookiePolicy;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Newtonsoft.Json;
 using Swashbuckle.AspNetCore.Filters;
 
+var connectionString = await SecretManager.GetConnectionString();
+var jwtConfiguration = JsonConvert.DeserializeObject<JwtConfig>(await SecretManager.GetJwtConfiguration());
+var bucketCredentials = JsonConvert.DeserializeObject<GoogleConfig>(await SecretManager.GetBucketCredentials());
 var myAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.Configure<JwtConfig>(builder.Configuration.GetSection(JwtConfig.SectionName));
-builder.Services.Configure<GoogleConfig>(builder.Configuration.GetSection(GoogleConfig.SectionName));
-
+builder.Services.Configure<GoogleConfig>(options =>
+{
+    if (bucketCredentials != null)
+    {
+        options.GoogleBucket.GoogleCloudStorageBucket = bucketCredentials.GoogleBucket.GoogleCloudStorageBucket;
+        options.GoogleBucket.GoogleCredential = bucketCredentials.GoogleBucket.GoogleCredential;
+    }
+});
+builder.Services.Configure<JwtConfig>(options =>
+{
+    if (jwtConfiguration != null)
+    {
+        options.JwtConfiguration = jwtConfiguration.JwtConfiguration;
+    }
+});
 builder.Services.AddControllers().AddJsonOptions(options =>
 {
     options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
@@ -74,13 +91,13 @@ builder.Services.AddAuthentication(options =>
         ValidateIssuer = false,
         ValidateLifetime = true,
         ClockSkew = TimeSpan.Zero,
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration.GetSection("JwtConfiguration:AccessTokenSecret").Value!)),
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtConfiguration!.JwtConfiguration.AccessTokenSecret))
     };
 });
 
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+    options.UseSqlServer(connectionString);
 });
 
 var app = builder.Build();

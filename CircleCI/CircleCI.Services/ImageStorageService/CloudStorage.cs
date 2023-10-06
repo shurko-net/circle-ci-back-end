@@ -1,10 +1,11 @@
-using CircleCI.Api.Configuration;
+using CircleCI.Services.Configuration;
 using Google.Apis.Auth.OAuth2;
 using Google.Cloud.Storage.V1;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 
-namespace CircleCI.Api.Services.ImageStorageService;
+namespace CircleCI.Services.ImageStorageService;
 
 public class CloudStorage : ICloudStorage
 {
@@ -14,10 +15,10 @@ public class CloudStorage : ICloudStorage
     public CloudStorage(IOptions<GoogleConfig> googleConfig)
     {
         var googleConfiguration = googleConfig.Value;
-        var json = JsonConvert.SerializeObject(googleConfiguration.GoogleCredential);
+        var json = JsonConvert.SerializeObject(googleConfiguration.GoogleBucket.GoogleCredential);
         var googleCredential = GoogleCredential.FromJson(json);
         _storageClient = StorageClient.Create(googleCredential);
-        _bucketName = googleConfiguration.GoogleCloudStorageBucket;
+        _bucketName = googleConfiguration.GoogleBucket.GoogleCloudStorageBucket;
     }
     
     public async Task<string> UploadFileAsync(IFormFile imageFile, string fileNameForStorage)

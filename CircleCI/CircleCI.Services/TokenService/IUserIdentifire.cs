@@ -1,4 +1,6 @@
-namespace CircleCI.Api.Services.TokenService;
+using Microsoft.AspNetCore.Http;
+
+namespace CircleCI.Services.TokenService;
 
 public interface IUserIdentifire
 {

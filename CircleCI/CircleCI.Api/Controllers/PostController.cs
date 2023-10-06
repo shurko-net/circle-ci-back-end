@@ -1,10 +1,10 @@
 using AutoMapper;
-using CircleCI.Api.Services.ImageStorageService;
-using CircleCI.Api.Services.TokenService;
 using CircleCI.DataService.Repositories.Interfaces;
 using CircleCI.Entities.DbSet;
 using CircleCI.Entities.DTOs.Requests;
 using CircleCI.Entities.DTOs.Responses;
+using CircleCI.Services.ImageStorageService;
+using CircleCI.Services.TokenService;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CircleCI.Api.Controllers;
