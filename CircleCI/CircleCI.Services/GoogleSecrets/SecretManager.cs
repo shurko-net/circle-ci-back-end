@@ -1,4 +1,5 @@
 using Google.Cloud.SecretManager.V1;
+using Npgsql;
 
 namespace CircleCI.Services.GoogleSecrets;
 
@@ -10,9 +11,9 @@ public static class SecretManager
     private const string JwtConfigurationSecret = "circleci_jwt_secrets";
     public static async Task<string> GetConnectionString()
     {
-        var response = await GetSecretVersionResponse(ConnectionStringSecret);
+        var response = await GetSecretVersionResponse(ConnectionStringSecret, "3");
 
-        return response.Payload.Data.ToStringUtf8().Remove(16, 1);
+        return response.Payload.Data.ToStringUtf8();
     }
     public static async Task<string> GetBucketCredentials()
     {
@@ -26,10 +27,10 @@ public static class SecretManager
 
         return response.Payload.Data.ToStringUtf8();
     }
-    private static async Task<AccessSecretVersionResponse> GetSecretVersionResponse(string secretString)
+    private static async Task<AccessSecretVersionResponse> GetSecretVersionResponse(string secretString, string version = "latest")
     {
         var client = await SecretManagerServiceClient.CreateAsync();
-        var secretVersion = new SecretVersionName(ProjectId, secretString, "latest");
+        var secretVersion = new SecretVersionName(ProjectId, secretString, version);
         var response = await client.AccessSecretVersionAsync(secretVersion);
 
         return response;
