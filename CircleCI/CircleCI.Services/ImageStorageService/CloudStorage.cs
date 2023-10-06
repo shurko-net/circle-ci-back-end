@@ -23,14 +23,12 @@ public class CloudStorage : ICloudStorage
     
     public async Task<string> UploadFileAsync(IFormFile imageFile, string fileNameForStorage)
     {
-        using (var memoryStream = new MemoryStream())
-        {
-            await imageFile.CopyToAsync(memoryStream);
+        using var memoryStream = new MemoryStream();
+        await imageFile.CopyToAsync(memoryStream);
 
-            await _storageClient.UploadObjectAsync(_bucketName, fileNameForStorage, "image/png", memoryStream);
+        await _storageClient.UploadObjectAsync(_bucketName, fileNameForStorage, "image/png", memoryStream);
             
-            return $"https://storage.cloud.google.com/{_bucketName}/{fileNameForStorage}";
-        }
+        return $"https://storage.cloud.google.com/{_bucketName}/{fileNameForStorage}";
     }
 
     public async Task DeleteFileAsync(string fileNameForStorage)
