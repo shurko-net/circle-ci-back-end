@@ -12,7 +12,7 @@ public static class SecretManager
     {
         var response = await GetSecretVersionResponse(ConnectionStringSecret);
 
-        return response.Payload.Data.ToStringUtf8();
+        return response.Payload.Data.ToStringUtf8().Remove(16, 1);
     }
     public static async Task<string> GetBucketCredentials()
     {

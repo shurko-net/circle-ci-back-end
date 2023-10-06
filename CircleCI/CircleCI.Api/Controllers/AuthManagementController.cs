@@ -97,7 +97,7 @@ public class AuthManagementController : BaseController
         {
             var user = await _unitOfWork.Users.GetByEmailAsync(request.Email);
             
-            if (!string.IsNullOrEmpty(user.Email))
+            if (user != null)
             {
                 return BadRequest("This email is already exist");
             }
