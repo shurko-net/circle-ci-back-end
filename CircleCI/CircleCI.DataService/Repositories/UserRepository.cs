@@ -65,9 +65,6 @@ public class UserRepository : GenericRepository<User>, IUserRepository
                 .Include(x => x.Token)
                 .FirstOrDefaultAsync(x => x.Email == userEmail);
             
-            if (result == null)
-                return new User();
-
             return result;
         }
         catch (Exception e)

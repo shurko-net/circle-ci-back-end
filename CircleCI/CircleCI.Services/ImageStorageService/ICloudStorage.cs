@@ -1,4 +1,6 @@
-namespace CircleCI.Api.Services.ImageStorageService;
+using Microsoft.AspNetCore.Http;
+
+namespace CircleCI.Services.ImageStorageService;
 
 public interface ICloudStorage
 {
