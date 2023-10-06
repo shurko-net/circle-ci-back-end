@@ -53,14 +53,14 @@ public class UserController : BaseController
     [HttpPut("follow/{followableId}")]
     public async Task<IActionResult> SubscribeUser(int followableId)
     {
-        var userId = _userIdentifire.GetIdByHeader(HttpContext);
-        if (followableId == userId)
+        var ownerId = _userIdentifire.GetIdByHeader(HttpContext);
+        if (followableId == ownerId)
             return BadRequest("Сan`t subscribe to yourself");
         
-        var follow = await _unitOfWork.Follows.GetById(userId, followableId);
+        var follow = await _unitOfWork.Follows.GetById(ownerId, followableId);
         var user = await _unitOfWork.Users.GetByIdAsync(followableId);
-        UserResponse mappedUser;
-
+        UserProfileResponse? response;
+        
         if (user == null)
             return NotFound("User doesnt exist");
         
@@ -70,18 +70,14 @@ public class UserController : BaseController
             await _unitOfWork.Follows.Add(new Follow()
             {
                 FollowedUserId = user.Id,
-                FollowerUserId = userId
+                FollowerUserId = ownerId
             });
             await _unitOfWork.Users.UpdateAsync(user);
             await _unitOfWork.CompleteAsync();
 
-            mappedUser = _mapper.Map<UserResponse>(user);
-            
-            return Ok(new
-            {
-                mappedUser,
-                IsFollowed = true
-            });
+            response = await _unitOfWork.Users.GetUserProfileAsync(ownerId, followableId);
+
+            return Ok(response);
         }
 
         user.FollowersAmount--;
@@ -89,13 +85,9 @@ public class UserController : BaseController
         await _unitOfWork.Users.UpdateAsync(user);
         await _unitOfWork.CompleteAsync();
         
-        mappedUser = _mapper.Map<UserResponse>(user);
-        
-        return Ok(new
-        {
-            mappedUser,
-            IsFollowed = false
-        });
+        response = await _unitOfWork.Users.GetUserProfileAsync(ownerId, followableId);
+
+        return Ok(response);
     }
 
     [HttpGet("get-popular-people")]
