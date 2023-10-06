@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CircleCI.DataService.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20231003102358_initial migration")]
+    [Migration("20231006102929_initial migration")]
     partial class initialmigration
     {
         /// <inheritdoc />
