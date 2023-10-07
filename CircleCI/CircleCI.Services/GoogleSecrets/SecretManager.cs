@@ -17,13 +17,13 @@ public static class SecretManager
     }
     public static async Task<string> GetBucketCredentials()
     {
-        var response = await GetSecretVersionResponse(BucketCredentialSecret);
+        var response = await GetSecretVersionResponse(BucketCredentialSecret, "2");
 
         return response.Payload.Data.ToStringUtf8();
     }
     public static async Task<string> GetJwtConfiguration()
     {
-        var response = await GetSecretVersionResponse(JwtConfigurationSecret);
+        var response = await GetSecretVersionResponse(JwtConfigurationSecret, "2");
 
         return response.Payload.Data.ToStringUtf8();
     }
