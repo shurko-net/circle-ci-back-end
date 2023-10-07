@@ -22,7 +22,6 @@ var bucketCredentials = JsonConvert.DeserializeObject<GoogleConfig>(await Secret
 var myAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
 var builder = WebApplication.CreateBuilder(args);
-
 builder.Services.Configure<GoogleConfig>(options =>
 {
     if (bucketCredentials != null)
