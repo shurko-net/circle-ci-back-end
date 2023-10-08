@@ -104,12 +104,11 @@ public class UserRepository : GenericRepository<User>, IUserRepository
             throw;
         }
     }
-
     public async Task<UserProfileResponse?> GetUserProfileAsync(int requestUserId, int ownerId)
     {
         try
         {
-            var user = await _dbSet.FirstOrDefaultAsync(u => u.Id == requestUserId);
+            var user = await _dbSet.FirstOrDefaultAsync(u => u.Id == ownerId);
 
             if (user == null)
                 return null;
@@ -130,15 +129,27 @@ public class UserRepository : GenericRepository<User>, IUserRepository
         }
     }
 
-    public async Task<IEnumerable<User>> GetPopularUserAsync()
+    public async Task<IEnumerable<UserProfileResponse>> GetPopularUserAsync(int requestUserId)
     {
         try
         {
-            var users = await _dbSet.OrderBy(u => u.Followers.Count)
-                .Take(5)
-                .AsSplitQuery().ToListAsync();
+            var users = await _dbSet.OrderByDescending(u => u.FollowersAmount)
+                .Take(4)
+                .AsSplitQuery()
+                .ToListAsync();
 
-            return users;
+            var response = _mapper.Map<IEnumerable<UserProfileResponse>>(users);
+            
+            foreach (var resp in response)
+            {
+                resp.CommentsAmount = await _context.Comments.CountAsync(u => u.UserId == resp.Id);
+                resp.PostsAmount = await _context.Posts.CountAsync(u => u.UserId == resp.Id);
+                resp.IsMyself = resp.Id == requestUserId;
+                resp.IsFollowed = await _context.Follows.AnyAsync(u => u.FollowerUserId == resp.Id
+                                                                       && u.FollowedUserId == requestUserId);
+            }
+
+            return response;
         }
         catch (Exception e)
         {

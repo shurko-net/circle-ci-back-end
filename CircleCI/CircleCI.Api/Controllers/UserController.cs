@@ -30,7 +30,7 @@ public class UserController : BaseController
             return Ok(owner);
         }
         
-        var user = await _unitOfWork.Users.GetUserProfileAsync(userId, ownerId);
+        var user = await _unitOfWork.Users.GetUserProfileAsync(ownerId, userId);
 
         if (user == null)
             return NotFound("User not found");
@@ -54,10 +54,11 @@ public class UserController : BaseController
     public async Task<IActionResult> SubscribeUser(int followableId)
     {
         var ownerId = _userIdentifire.GetIdByHeader(HttpContext);
+        
         if (followableId == ownerId)
             return BadRequest("Сan`t subscribe to yourself");
         
-        var follow = await _unitOfWork.Follows.GetById(ownerId, followableId);
+        var follow = await _unitOfWork.Follows.GetById(followableId, ownerId);
         var user = await _unitOfWork.Users.GetByIdAsync(followableId);
         UserProfileResponse? response;
         
@@ -69,8 +70,8 @@ public class UserController : BaseController
             user.FollowersAmount++;
             await _unitOfWork.Follows.Add(new Follow()
             {
-                FollowedUserId = user.Id,
-                FollowerUserId = ownerId
+                FollowerUserId = user.Id,
+                FollowedUserId = ownerId
             });
             await _unitOfWork.Users.UpdateAsync(user);
             await _unitOfWork.CompleteAsync();
@@ -93,16 +94,18 @@ public class UserController : BaseController
     [HttpGet("get-popular-people")]
     public async Task<IActionResult> GetPopularPeople()
     {
-        var users = await _unitOfWork.Users.GetPopularUserAsync();
+        var users = await _unitOfWork.Users
+            .GetPopularUserAsync(
+                _userIdentifire.GetIdByHeader(HttpContext));
 
         if (!users.Any())
             return NotFound("Popular users doesnt found");
         
-        return Ok(_mapper.Map<IEnumerable<UserResponse>>(users));
+        return Ok(users);
     }
     
     [HttpGet("search-user/{page?}/{query?}")]
-    public async Task<IActionResult> SearchUser(int page = 0,string query = "")
+    public async Task<IActionResult> SearchUser(int page = 0, string query = "")
     {
         if (string.IsNullOrEmpty(query))
         {

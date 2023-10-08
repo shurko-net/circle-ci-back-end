@@ -10,5 +10,5 @@ public interface IUserRepository : IGenericRepository<User>
     Task<User?> GetByEmailAsync(string userEmail);
     Task<IEnumerable<User?>> SearchByInitialAsync(int? page, string query);
     Task<UserProfileResponse?> GetUserProfileAsync(int requestUserId, int ownerId);
-    Task<IEnumerable<User>> GetPopularUserAsync();
+    Task<IEnumerable<UserProfileResponse>> GetPopularUserAsync(int requestUserId);
 }

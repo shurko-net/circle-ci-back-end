@@ -32,7 +32,7 @@ public class FollowRepository : GenericRepository<Follow>, IFollowRepository
         }
     }
 
-    public async Task<Follow?> GetById(int userId,int followedId)
+    public async Task<Follow?> GetById(int userId, int followedId)
     {
         
         try
