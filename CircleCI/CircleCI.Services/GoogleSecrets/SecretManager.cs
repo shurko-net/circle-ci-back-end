@@ -5,10 +5,16 @@ namespace CircleCI.Services.GoogleSecrets;
 
 public static class SecretManager
 {
-    private const string ProjectId = "circleci-388910";
+    private static readonly string ProjectId;
     private const string ConnectionStringSecret = "circleci_connection_string";
     private const string BucketCredentialSecret = "bucket_credentials";
     private const string JwtConfigurationSecret = "circleci_jwt_secrets";
+    static SecretManager()
+    {
+        ProjectId = Environment.GetEnvironmentVariable("SecretsManagerProjectId")
+                    ?? throw new InvalidOperationException("Project ID not set in environment.");
+    }
+    
     public static async Task<string> GetConnectionString()
     {
         var response = await GetSecretVersionResponse(ConnectionStringSecret, "3");
