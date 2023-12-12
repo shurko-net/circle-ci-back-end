@@ -139,7 +139,7 @@ public class PostRepository : GenericRepository<Post>, IPostRepository
 
             if (isSaved)
             {
-                return mappedPosts.Where(p => p.IsSaved);
+                return mappedPosts.Where(p => p.IsSaved).ToList();
             }
             
             return mappedPosts;

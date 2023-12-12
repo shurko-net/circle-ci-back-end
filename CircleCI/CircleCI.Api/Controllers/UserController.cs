@@ -126,7 +126,7 @@ public class UserController : BaseController
     public async Task<IActionResult> GetSavedPost(int page = 0)
     {
         var userId = _userIdentifire.GetIdByHeader(HttpContext);
-        var posts = await _unitOfWork.Posts.KeySetPage(page, userId, true, true);
+        var posts = await _unitOfWork.Posts.KeySetPage(page, userId, isSaved: true);
 
         if (!posts.Any())
         {
