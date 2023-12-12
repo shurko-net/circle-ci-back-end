@@ -135,7 +135,6 @@ public class UserRepository : GenericRepository<User>, IUserRepository
         {
             var users = await _dbSet.OrderByDescending(u => u.FollowersAmount)
                 .Take(4)
-                .AsSplitQuery()
                 .ToListAsync();
 
             var response = _mapper.Map<IEnumerable<UserProfileResponse>>(users);

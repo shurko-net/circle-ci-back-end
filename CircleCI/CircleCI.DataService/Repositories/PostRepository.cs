@@ -110,14 +110,13 @@ public class PostRepository : GenericRepository<Post>, IPostRepository
         try
         {
             const int pageSize = 5;
+            
             var temp = await _dbSet.OrderByDescending(b => b.Id)
                 .Skip((page ?? 0) * pageSize)
+                .Include(b => b.User)
                 .Include(b => b.Category)
                 .ThenInclude(b => b.CategoryList)
-                .Include(b => b.User)
-                .ThenInclude(b => b.Followers)
                 .Take(pageSize)
-                .AsSplitQuery()
                 .ToListAsync();
 
             if(isProfile)
@@ -134,8 +133,8 @@ public class PostRepository : GenericRepository<Post>, IPostRepository
                                                                       l.UserId == userId);
                 pair.Mpt.IsSaved = await _context.Saves.AnyAsync(l => l.PostId == pair.Mpt.Id &&
                                                                       l.UserId == userId);
-                pair.Mpt.IsFollow = pair.Pt.User.Followers.Any(u => u.FollowerUserId == userId
-                                                                  && u.FollowedUserId == pair.Pt.UserId);
+                pair.Mpt.IsFollow = await _context.Follows.AnyAsync(f => f.FollowerUserId == pair.Mpt.UserId
+                                                                         && f.FollowedUserId == userId);
             }
 
             if (isSaved)

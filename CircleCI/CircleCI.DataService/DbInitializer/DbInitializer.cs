@@ -23,187 +23,187 @@ public class DbInitializer : IDbInitializer
         {
             _context.CategoriesList.AddRange(new List<CategoryList>()
             {
-                new CategoryList
+                new()
                 {
                     Name = "C#",
                     ImageUrl = "https://storage.googleapis.com/circleci-images/IconsForCategory/c-sharp-c-icon.png"
                 },
-                new CategoryList
+                new()
                 {
                     Name = "C++",
                     ImageUrl = "https://storage.googleapis.com/circleci-images/IconsForCategory/cplusplus.png"
                 },
-                new CategoryList
+                new()
                 {
                     Name = "C",
                     ImageUrl = "https://storage.googleapis.com/circleci-images/IconsForCategory/c_original_logo_icon_146611.png"
                 },
-                new CategoryList
+                new()
                 {
                     Name = "F#",
                     ImageUrl = "https://storage.googleapis.com/circleci-images/IconsForCategory/fsharp.png"
                 },
-                new CategoryList
+                new()
                 {
                     Name = "Email",
                     ImageUrl = "https://storage.googleapis.com/circleci-images/IconsForCategory/emailicon.png"
                 },
-                new CategoryList
+                new()
                 {
                     Name = "Google Workspace",
                     ImageUrl = "https://storage.googleapis.com/circleci-images/IconsForCategory/googleWorkspace.png"
                 },
-                new CategoryList
+                new()
                 {
                     Name = "Google Play",
                     ImageUrl = "https://storage.googleapis.com/circleci-images/IconsForCategory/google-play-store-logo-png-transparent-png-logos-10.png"
                 },
-                new CategoryList
+                new()
                 {
                     Name = "Java",
                     ImageUrl = "https://storage.googleapis.com/circleci-images/IconsForCategory/java.png"
                 },
-                new CategoryList
+                new()
                 {
                     Name = "JavaScript",
                     ImageUrl = "https://storage.googleapis.com/circleci-images/IconsForCategory/js.png"
                 },
-                new CategoryList
+                new()
                 {
                     Name = "Unity",
                     ImageUrl = "https://storage.googleapis.com/circleci-images/IconsForCategory/unity-icon.png"
                 },
-                new CategoryList
+                new()
                 {
                     Name = "Angular",
                     ImageUrl = "https://storage.googleapis.com/circleci-images/IconsForCategory/Angular.png"
                 },
-                new CategoryList
+                new()
                 {
                     Name = "React",
                     ImageUrl = "https://storage.googleapis.com/circleci-images/IconsForCategory/react.png"
                 },
-                new CategoryList
+                new()
                 {
                     Name = "Python",
                     ImageUrl = "https://storage.googleapis.com/circleci-images/IconsForCategory/Python_logo_icon.png"
                 },
-                new CategoryList
+                new()
                 {
                     Name = "Microsoft",
                     ImageUrl = "https://storage.googleapis.com/circleci-images/IconsForCategory/microsoft.png"
                 },
-                new CategoryList
+                new()
                 {
                     Name = "Json Web Token",
                     ImageUrl = "https://storage.googleapis.com/circleci-images/IconsForCategory/jwt.png"
                 },
-                new CategoryList
+                new()
                 {
                     Name = "HTML",
                     ImageUrl = "https://storage.googleapis.com/circleci-images/IconsForCategory/html.png"
                 },
-                new CategoryList
+                new()
                 {
                     Name = "CSS",
                     ImageUrl = "https://storage.googleapis.com/circleci-images/IconsForCategory/css.png"
                 },
-                new CategoryList
+                new()
                 {
                     Name = "Linux",
                     ImageUrl = "https://storage.googleapis.com/circleci-images/IconsForCategory/linux.png"
                 },
-                new CategoryList
+                new()
                 {
                     Name = "Google",
                     ImageUrl = "https://storage.googleapis.com/circleci-images/IconsForCategory/google-icon.png"
                 },
-                new CategoryList
+                new()
                 {
                     Name = "Node.js",
                     ImageUrl = "https://storage.googleapis.com/circleci-images/IconsForCategory/node-js.png"
                 },
-                new CategoryList
+                new()
                 {
                     Name = "SQL",
                     ImageUrl = "https://storage.googleapis.com/circleci-images/IconsForCategory/sql.png"
                 },
-                new CategoryList
+                new()
                 {
                     Name = "Git",
                     ImageUrl = "https://storage.googleapis.com/circleci-images/IconsForCategory/Git_icon.png"
                 },
-                new CategoryList
+                new()
                 {
                     Name = "GitHub",
                     ImageUrl = "https://storage.googleapis.com/circleci-images/IconsForCategory/github.png"
                 },
-                new CategoryList
+                new()
                 {
                     Name = "API",
                     ImageUrl = "https://storage.googleapis.com/circleci-images/IconsForCategory/api.png"
                 },
-                new CategoryList
+                new()
                 {
                     Name = "Nginx",
                     ImageUrl = "https://storage.googleapis.com/circleci-images/IconsForCategory/ngnix.png"
                 },
-                new CategoryList
+                new()
                 {
                     Name = "IT",
                     ImageUrl = "https://storage.googleapis.com/circleci-images/IconsForCategory/it.png"
                 },
-                new CategoryList
+                new()
                 {
                     Name = "macOS",
                     ImageUrl = "https://storage.googleapis.com/circleci-images/IconsForCategory/MacOS_logo.png"
                 },
-                new CategoryList
+                new()
                 {
                     Name = ".Net",
                     ImageUrl = "https://storage.googleapis.com/circleci-images/IconsForCategory/Microsoft_.NET_logo.png"
                 },
-                new CategoryList
+                new()
                 {
                     Name = "Ruby",
                     ImageUrl = "https://storage.googleapis.com/circleci-images/IconsForCategory/Ruby_logo.png"
                 },
-                new CategoryList
+                new()
                 {
                     Name = "Amazon Web Services",
                     ImageUrl = "https://storage.googleapis.com/circleci-images/IconsForCategory/aws.png"
                 },
-                new CategoryList
+                new()
                 {
                     Name = "Vue.js",
                     ImageUrl = "https://storage.googleapis.com/circleci-images/IconsForCategory/vuejs.png"
                 },
-                new CategoryList
+                new()
                 {
                     Name = "TypeScript",
                     ImageUrl = "https://storage.googleapis.com/circleci-images/IconsForCategory/Typescript_logo.png"
                 },
-                new CategoryList
+                new()
                 {
                     Name = "Microsoft Azure",
                     ImageUrl = "https://storage.googleapis.com/circleci-images/IconsForCategory/azure.png"
                 },
-                new CategoryList
+                new()
                 {
                     Name = "Accessibility",
                     ImageUrl = "https://storage.googleapis.com/circleci-images/IconsForCategory/access.png"
                 },
-                new CategoryList
+                new()
                 {
                     Name = "Docker",
                     ImageUrl = "https://storage.googleapis.com/circleci-images/IconsForCategory/Docker-Symbol.png"
                 },
-                new CategoryList
+                new()
                 {
                     Name = "Kubernetes",
                     ImageUrl = "https://storage.googleapis.com/circleci-images/IconsForCategory/Kubernetes-Logo.png"
                 },
-                new CategoryList
+                new()
                 {
                     Name = "Linus Torvalds",
                     ImageUrl = "https://storage.googleapis.com/circleci-images/IconsForCategory/glek.png"
